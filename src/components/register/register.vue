@@ -5,6 +5,7 @@
       <mt-field label="昵称:" placeholder="请输入昵称" v-model="nickname"></mt-field>
       <mt-field label="密码:" placeholder="请输入密码" type="password" v-model="password"></mt-field>
       <mt-field label="手机号:" placeholder="请输入手机号" v-model.number="mobile"></mt-field>
+      <mt-field class="verify" label="短信验证码:" placeholder="请输入验证码" v-model="info"><mt-button @click.prevent="verifyinfo"  type="primary">发送</mt-button></mt-field>
       <mt-button @click.prevent="register" size="large" type="primary">注册</mt-button>
     </form>
   </div>
@@ -20,27 +21,32 @@ export default {
       username: "",
       nickname: "",
       password: "",
-      mobile: ""
+      mobile: "",
+      info: ""
     };
   },
   methods: {
+    verifyinfo: function(){
+      const _this = this;
+      this.$http({
+        method: "POST",
+        url: '/api/verityInfo',
+        data:{mobile: _this.mobile}
+      }).then(res => {
+        console.log(res)
+      })
+    },
     register: function(ev) {
       const _this = this;
-      // let obj = {
-      //      username: _this.username,
-      //     nickname:_this.nickname,
-      //     password:_this.password,
-      //     mobile:_this.mobile
-      //   }
       this.$http({
         method: "POST",
         url: "/api/register",
-
         data: {
           username: _this.username,
           nickname: _this.nickname,
           password: _this.password,
-          mobile: _this.mobile
+          mobile: _this.mobile,
+          verifyCode: _this.info
         }
       }).then(res => {
         let data = res.data;
@@ -78,8 +84,17 @@ export default {
 <style lang="less">
 #register {
   .mint-cell-title {
-    width: 75px;
+    width: 90px;
     color: #666;
+  }
+}
+.verify {
+  .mint-field-core{
+    flex:0.5
+  }
+  .mint-button{
+    height: 27px;
+    margin-left: 10px;
   }
 }
 </style>

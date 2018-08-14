@@ -11,6 +11,8 @@ var app = express();
 var mongoose = require('mongoose');
 var http = require('http').Server(app);
 var path = require('path');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
 
@@ -21,12 +23,20 @@ db.once('open', function () {
   console.log('database connect');
 });
 
+app.use(cookieParser());
+app.use(session({
+  secret: '12345',
+  cookie: { maxAge: 300000 },
+  resave: false,
+  saveUninitialized: true
+}));
 app.use(express.static(path.resolve(__dirname, '../static/')));
 
 app.use('/', _router2.default);
 http.listen(3001, function () {
   console.log('server connetion');
 });
+console.log(session);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false

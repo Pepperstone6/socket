@@ -3,6 +3,8 @@ let app = express()
 let mongoose = require('mongoose')
 let http = require('http').Server(app);
 let path = require('path')
+let cookieParser = require('cookie-parser')
+let session = require('express-session')
 let io = require('socket.io')(http)
 const bodyParser = require('body-parser')
 
@@ -14,12 +16,20 @@ db.once('open',function(){
   console.log('database connect')
 })
 
+app.use(cookieParser());
+app.use(session({
+  secret: '12345',
+  cookie:{maxAge: 300000},
+  resave:false,
+  saveUninitialized:true
+}))
 app.use(express.static(path.resolve(__dirname, '../static/')))
 
 app.use('/', router)
 http.listen(3001, function (){
   console.log('server connetion')
 })
+console.log(session)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false

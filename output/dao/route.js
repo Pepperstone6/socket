@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.register = register;
 exports.login = login;
+exports.verityInfo = verityInfo;
 
 var _model = require('./model');
 
@@ -26,4 +27,12 @@ function login(req, res) {
     res.send(data);
   };
   db.login(req, callback);
+}
+function verityInfo(req, res) {
+  var callback = function callback(data) {
+    // if(code)req.session.verifyCode = code
+    // console.log(req.session,123132)
+    res.send(data);
+  };
+  db.verityInfo(req, callback);
 }

@@ -43,3 +43,26 @@ export function find(Model, obj, callback){
       }
     })
 }
+
+export function findOne(Model, obj, callback){
+  Model.findOne(obj, function(err, data){
+    if(err){
+      console.error(err)
+    }
+    if(callback){
+      callback(data)
+    }
+  })
+}
+
+export function save(model, callback){
+  model.save(function(err, data){
+    if(err){
+      console.error(err)
+    }
+    console.log(data)
+    if(callback){
+      callback(data)
+    }
+  })
+}

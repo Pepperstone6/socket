@@ -16,6 +16,11 @@ const Register = (resolve) => {
     resolve(module)
   })
 }
+const Index = (resolve) => {
+  import('com/index/index').then(module => {
+    resolve(module)
+  })
+}
 
 Vue.use(Router)
 
@@ -35,6 +40,11 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: Register
+    },
+    {
+      path: '/index',
+      name: 'index',
+      component: Index
     }
   ]
 })

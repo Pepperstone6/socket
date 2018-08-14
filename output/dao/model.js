@@ -3,8 +3,14 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
 exports.register = register;
 exports.login = login;
+exports.verityInfo = verityInfo;
 
 var _collections = require('./collections');
 
@@ -12,17 +18,32 @@ var _util = require('./util');
 
 var _mongoose = require('mongoose');
 
+var _mailVerify = require('./util/mailVerify.js');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var formidable = require('formidable');
 function register(req, callback) {
   var form = new formidable.IncomingForm();
   var obj = {};
   form.parse(req, function (err, fields, files) {
     // console.log(fields,222, files,111)
+
     var username = fields.username,
         nickname = fields.nickname,
         mobile = fields.mobile,
-        password = fields.password;
+        password = fields.password,
+        verifyCode = fields.verifyCode;
 
+    console.log(req.session.verifyCode, verifyCode);
+    if (req.session.verifyCode != verifyCode) {
+      obj = {
+        success: true,
+        msg: '验证码不正确'
+      };
+      callback(obj);
+      return;
+    }
     if (!username) {
       obj = {
         success: true,
@@ -81,9 +102,13 @@ function register(req, callback) {
         };
         (0, _util.add)(_collections.userModel, config, recordBc);
       };
-      (0, _util.find)(_collections.userModel, { mobile: mobile }, findBc);
+      (0, _util.find)(_collections.userModel, {
+        mobile: mobile
+      }, findBc);
     };
-    (0, _util.find)(_collections.userModel, { username: username }, findBc);
+    (0, _util.find)(_collections.userModel, {
+      username: username
+    }, findBc);
   });
 }
 
@@ -110,5 +135,53 @@ function login(req, callback) {
     }
     var config = fields;
     (0, _util.findUser)(_collections.userModel, config, callback);
+  });
+}
+
+function verityInfo(req, callback) {
+  var form = new formidable.IncomingForm();
+  form.parse(req, function (err, fields, files) {
+    var mobile = fields.mobile;
+
+    if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(mobile)) {
+      var obj = {
+        success: true,
+        msg: '请输入正确的手机号'
+      };
+      callback(obj);
+      return;
+    }
+    var code = "" + Math.ceil(Math.random() * 9);
+    for (var i = 0; i < 5; i++) {
+      code += Math.floor(Math.random() * 10);
+    }
+    var verityBc = function verityBc(phone, code, stutas) {
+
+      if (stutas.success) {
+        var findMobileBc = function findMobileBc(verifyInfo) {
+          if (!(0, _keys2.default)(verifyInfo).length) {
+            var verifyConfig = {
+              mobile: phone,
+              verifyCode: code,
+              date: new Date().getTime()
+            };
+            var addBc = function addBc() {
+              callback(stutas);
+            };
+            (0, _util.add)(_collections.verifyModel, verifyConfig, addBc);
+          } else {
+            verifyInfo.verifyCode = code;
+            verifyInfo.date = new Date().getTime();
+            (0, _util.save)(verifyInfo);
+          }
+        };
+        (0, _util.findOne)(_collections.verifyModel, {
+          mobile: phone
+        }, findMobileBc);
+      } else {
+        callback(stutas);
+      }
+    };
+    (0, _mailVerify.mailVerify)(mobile, code, verityBc);
   });
 }

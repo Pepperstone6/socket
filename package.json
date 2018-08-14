@@ -12,8 +12,11 @@
     "server": "npm run server-build && node output/bin/server.js"
   },
   "dependencies": {
+    "@alicloud/sms-sdk": "^1.1.2",
     "babel-cli": "^6.26.0",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
+    "express-session": "^1.15.6",
     "formidable": "^1.2.1",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
@@ -23,7 +26,8 @@
     "rm": "^0.1.8",
     "socket.io": "^2.1.1",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

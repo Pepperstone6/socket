@@ -15,3 +15,11 @@ export function login(req, res){
   }
   db.login(req, callback)
 }
+export function verityInfo(req, res){
+  let callback = (data) => {
+    // if(code)req.session.verifyCode = code
+    // console.log(req.session,123132)
+    res.send(data)
+  }
+  db.verityInfo(req, callback)
+}

@@ -30,6 +30,11 @@ var Register = function Register(resolve) {
     resolve(module);
   });
 };
+var Index = function Index(resolve) {
+  import('com/index/index').then(function (module) {
+    resolve(module);
+  });
+};
 
 _vue2.default.use(_vueRouter2.default);
 
@@ -46,5 +51,9 @@ exports.default = new _vueRouter2.default({
     path: '/register',
     name: 'register',
     component: Register
+  }, {
+    path: '/index',
+    name: 'index',
+    component: Index
   }]
 });

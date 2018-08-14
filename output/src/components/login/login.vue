@@ -21,7 +21,8 @@
 import Vue from 'vue'
 import {
   Field,
-  Button
+  Button,
+  Toast
 } from 'mint-ui'
 Vue.component(Field.name, Field);
 Vue.component(Button.name, Button);
@@ -43,7 +44,16 @@ export default {
           password: _this.password
         }
       }).then(res => {
-        console.log(res)
+        if(res.data.success){
+          Toast({
+            message: res.data.msg,
+            position: "middle",
+            duration: 1500
+          });
+          setTimeout(()=>{
+            _this.$router.push('/index')
+          },1500)
+        }
       })
     }
   }

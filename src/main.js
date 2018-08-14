@@ -4,9 +4,11 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+
 import Icon from 'vue2-svg-icon/Icon.vue'
 Vue.component('icon', Icon)
 
+// import store from '../store/index.js'
 // Icon.inject('user')
 Vue.config.productionTip = false
 axios.defaults.headers['Content-Type'] = 'application/json'
