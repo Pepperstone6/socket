@@ -5,7 +5,7 @@ Vue.use(Vuex)
 import state from './state'
 import motations from './mutations'
 import * as actions from './actions'
-import * as getter from './getter'
+import * as getters from './getter'
 const store = new Vuex.Store({
   state,
   motations,

@@ -1,17 +1,23 @@
 <template>
   <div id="register">
+    <prev-header title="注册"></prev-header>
+    <div class="icon">
+      <img src="@/assets/images/register.jpg" alt="">
+      <h2>welcome to find</h2>
+    </div>
     <form action="">
       <mt-field label="用户名:" placeholder="请输入用户名" v-model="username"></mt-field>
       <mt-field label="昵称:" placeholder="请输入昵称" v-model="nickname"></mt-field>
       <mt-field label="密码:" placeholder="请输入密码" type="password" v-model="password"></mt-field>
       <mt-field label="手机号:" placeholder="请输入手机号" v-model.number="mobile"></mt-field>
-      <mt-field class="verify" label="短信验证码:" placeholder="请输入验证码" v-model="info"><mt-button @click.prevent="verifyinfo"  type="primary">发送</mt-button></mt-field>
-      <mt-button @click.prevent="register" size="large" type="primary">注册</mt-button>
+      <mt-field class="verify" label="短信验证码:" placeholder="请输入验证码" v-model="info"><mt-button :disabled="submit.disabled"  @click.prevent="verifyinfo"  :type="submit.type">{{submit.content}}</mt-button></mt-field>
+      <mt-button @click.prevent="register" class="submit" size="large" type="primary">注册</mt-button>
     </form>
   </div>
 </template>
 <script>
 import Vue from "vue";
+import PrevHeader from 'com/prevTop/prevTop'
 import { Field, Button, Toast } from "mint-ui";
 Vue.component(Field.name, Field);
 Vue.component(Button.name, Button);
@@ -22,7 +28,12 @@ export default {
       nickname: "",
       password: "",
       mobile: "",
-      info: ""
+      info: "",
+      submit:{
+        disabled:false,
+        type:"primary",
+        content:"发送"
+      }
     };
   },
   methods: {
@@ -34,6 +45,28 @@ export default {
         data:{mobile: _this.mobile}
       }).then(res => {
         console.log(res)
+        let data = res.data;
+        if(data.success){
+          this.submit.type = 'default';
+          this.submit.disabled = true;
+           this.submit.content =`已发送(60)`
+          let index =1;
+        let intelval = setInterval(()=>{
+            this.submit.content =`已发送(${60-index})`
+             if(index === 60){
+              clearInterval(intelval)
+              this.submit.type = 'primary';
+              this.submit.disabled = false;
+              this.submit.content =`发送`
+            }
+            index++
+          },1000)
+        }
+        Toast({
+          message: data.msg,
+          position: "middle",
+          duration: 1000
+        })
       })
     },
     register: function(ev) {
@@ -78,6 +111,9 @@ export default {
         }
       });
     }
+  },
+  components:{
+    PrevHeader
   }
 };
 </script>
@@ -90,11 +126,31 @@ export default {
 }
 .verify {
   .mint-field-core{
-    flex:0.5
+    flex:0.75
   }
   .mint-button{
     height: 27px;
     margin-left: 10px;
   }
+}
+.icon{
+  margin-top: 75px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  img{
+    width: 100%;
+    display: block;
+  }
+  h2{
+    font-size: 20px;
+    font-weight: normal;
+    margin-top:0;
+    margin-left: -35px; 
+  }
+}
+.submit{
+  margin-top: 10px;
 }
 </style>

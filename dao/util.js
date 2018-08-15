@@ -66,3 +66,15 @@ export function save(model, callback){
     }
   })
 }
+
+export function findVerify(Model, config, callback){
+  return new Promise((resolve, reject)=>{
+    Model.findOne(config, function(err,data){
+      if(err){
+        console.error(err)
+      }
+        resolve(data)
+        reject(data)
+    })
+  })
+}

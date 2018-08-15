@@ -7,7 +7,8 @@ import {
   findUser,
   find,
   findOne,
-  save
+  save,
+  findVerify
 } from './util'
 
 import {
@@ -21,6 +22,7 @@ let formidable = require('formidable')
 export function register(req, callback) {
   let form = new formidable.IncomingForm()
   let obj = {}
+  let date = new Date().getTime()
   form.parse(req, function (err, fields, files) {
     // console.log(fields,222, files,111)
 
@@ -31,49 +33,58 @@ export function register(req, callback) {
       password,
       verifyCode
     } = fields
-    console.log(req.session.verifyCode, verifyCode)
-    if (req.session.verifyCode != verifyCode) {
-      obj = {
-        success: true,
-        msg: '验证码不正确'
+    findVerify(verifyModel, {
+      mobile
+    }).then(res => {
+      if(!res){
+        obj = {
+          success: false,
+          msg: '验证码不正确,请重新输入'
+        }
+        callback(obj)
+        return
       }
-      callback(obj)
-      return
-    }
-    if (!username) {
-      obj = {
-        success: true,
-        msg: '用户名不能为空'
+      if(res.verifyCode != verifyCode){
+        obj = {
+          success: false,
+          msg: '验证码不正确,请重新输入'
+        }
+        callback(obj)
+        return
+      }else if(date-res.date>300000){
+        obj = {
+          success: false,
+          msg: '验证码已过期'
+        }
+        callback(obj)
+        return
       }
-      callback(obj)
-      return
-    } else if (!nickname) {
-      obj = {
-        success: true,
-        msg: '昵称不能为空'
-      }
-      callback(obj)
-      return
-    } else if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(mobile)) {
-      obj = {
-        success: true,
-        msg: '请输入正确的手机号'
-      }
-      callback(obj)
-      return
-    } else if (!/^(?![A-Z]+$)(?![a-z]+$)(?!\d+$)(?![\W_]+$)\S+$/.test(password)) {
-      obj = {
-        success: true,
-        msg: '密码由非空格字符组成的字符串，数字，大写字母，小写字母，特殊字符至少有两种'
-      }
-      callback(obj)
-      return
-    }
-    let findBc = (res) => {
-      if (res.length) {
-        let obj = {
-          success: true,
-          msg: '用户名已存在'
+
+      if (!username) {
+        obj = {
+          success: false,
+          msg: '用户名不能为空'
+        }
+        callback(obj)
+        return
+      } else if (!nickname) {
+        obj = {
+          success: false,
+          msg: '昵称不能为空'
+        }
+        callback(obj)
+        return
+      } else if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(mobile)) {
+        obj = {
+          success: false,
+          msg: '请输入正确的手机号'
+        }
+        callback(obj)
+        return
+      } else if (!/^(?![A-Z]+$)(?![a-z]+$)(?!\d+$)(?![\W_]+$)\S+$/.test(password)) {
+        obj = {
+          success: false,
+          msg: '密码由非空格字符组成的字符串，数字，大写字母，小写字母，特殊字符至少有两种'
         }
         callback(obj)
         return
@@ -81,30 +92,40 @@ export function register(req, callback) {
       let findBc = (res) => {
         if (res.length) {
           let obj = {
-            success: true,
-            msg: '手机号已注册'
+            success: false,
+            msg: '用户名已存在'
           }
           callback(obj)
           return
         }
-        let config = fields
-        let recordBc = (res) => {
-          let obj = {
-            success: true,
-            msg: '注册成功'
+        let findBc = (res) => {
+          if (res.length) {
+            let obj = {
+              success: false,
+              msg: '手机号已注册'
+            }
+            callback(obj)
+            return
           }
-          callback(obj)
-          return
+          let config = fields
+          let recordBc = (res) => {
+            let obj = {
+              success: true,
+              msg: '注册成功'
+            }
+            callback(obj)
+            return
+          }
+          add(userModel, config, recordBc)
         }
-        add(userModel, config, recordBc)
+        find(userModel, {
+          mobile
+        }, findBc)
       }
       find(userModel, {
-        mobile
+        username
       }, findBc)
-    }
-    find(userModel, {
-      username
-    }, findBc)
+    })
   })
 }
 
@@ -150,37 +171,52 @@ export function verityInfo(req, callback) {
       callback(obj)
       return
     }
-    let code = "" + Math.ceil(Math.random() * 9)
-    for (let i = 0; i < 5; i++) {
-      code += Math.floor(Math.random() * 10)
-    }
-    let verityBc = (phone, code, stutas) => {
 
-      if (stutas.success) {
-        let findMobileBc = (verifyInfo) => {
-          if (!Object.keys(verifyInfo).length) {
-            let verifyConfig = {
-              mobile: phone,
-              verifyCode: code,
-              date: new Date().getTime()
-            }
-            let addBc = () => {
-              callback(stutas)
-            }
-            add(verifyModel, verifyConfig, addBc)
-          }else{
-            verifyInfo.verifyCode = code;
-            verifyInfo.date = new Date().getTime()
-            save(verifyInfo)
-          }
-        }
-        findOne(verifyModel, {
-          mobile: phone
-        }, findMobileBc)
+    findVerify(verifyModel, {
+      mobile
+    }).then(res => {
+      let date = new Date().getTime()
+      let code = ""
+      if (res && date - res.date <= 300000) {
+        code = res.verifyCode
+        date = res.date
       } else {
-        callback(stutas)
+        code += Math.ceil(Math.random()*9)
+        for (let i = 0; i < 5; i++) {
+          code += Math.floor(Math.random()*10)
+        }
       }
-    }
-    mailVerify(mobile, code, verityBc)
+      let verityBc = (phone, code, stutas) => {
+        if (stutas.success) {
+          let findMobileBc = (verifyInfo) => {
+            if (!verifyInfo) {
+              let verifyConfig = {
+                mobile: phone,
+                verifyCode: code,
+                date: date
+              }
+              let addBc = () => {
+                callback(stutas)
+              }
+              add(verifyModel, verifyConfig, addBc)
+            } else {
+              verifyInfo.verifyCode = code;
+              verifyInfo.date = date
+
+              let changeBc = () => {
+                callback(stutas)
+              }
+              save(verifyInfo, changeBc)
+            }
+          }
+          findOne(verifyModel, {
+            mobile: phone
+          }, findMobileBc)
+        } else {
+          callback(stutas)
+        }
+      }
+      mailVerify(mobile, code, verityBc)
+    })
   })
 }

@@ -22,6 +22,16 @@ const Index = (resolve) => {
   })
 }
 
+const Message = (resolve) => {
+  import('com/message/message').then(module => {
+    resolve(module)
+  })
+}
+const Relative = (resolve) => {
+  import('com/relative/relative').then(module => {
+    resolve(module)
+  })
+}
 Vue.use(Router)
 
 export default new Router({
@@ -44,7 +54,25 @@ export default new Router({
     {
       path: '/index',
       name: 'index',
-      component: Index
+      component: Index,
+      children: [
+        {
+          path: 'message',
+          component:Message
+        },
+        {
+          path: 'relative',
+          component:Relative
+        },
+        {
+          path: 'look',
+          component:Message
+        },
+        {
+          path: 'dong',
+          component:Message
+        }
+      ]
     }
   ]
 })

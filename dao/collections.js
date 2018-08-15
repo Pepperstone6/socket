@@ -5,7 +5,11 @@ let userSchema =new mongoose.Schema({
   username: String,
   nickname:String,
   mobile: String,
-  password: String
+  password: String,
+  avatar: {
+    type:String,
+    default: 'static/images/avatar.jpg'
+  }
 })
 
 let verifyCode = new mongoose.Schema({
