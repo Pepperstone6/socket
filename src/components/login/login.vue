@@ -46,12 +46,14 @@ export default {
           password: _this.password
         }
       }).then(res => {
-        if(res.data.success){
+        let data = res.data
+        if(data.success){
           Toast({
-            message: res.data.msg,
+            message: '登陆成功',
             position: "middle",
             duration: 1500
           });
+          this.$store.dispatch('setUserInfo', data)
           setTimeout(()=>{
             _this.$router.push('/index')
           },1500)

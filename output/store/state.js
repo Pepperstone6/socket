@@ -3,5 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var state = {};
+var state = {
+  userInfo: null
+};
 exports.default = state;

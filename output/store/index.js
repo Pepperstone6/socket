@@ -26,7 +26,7 @@ var actions = _interopRequireWildcard(_actions);
 
 var _getter = require('./getter');
 
-var getter = _interopRequireWildcard(_getter);
+var getters = _interopRequireWildcard(_getter);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -36,7 +36,7 @@ _vue2.default.use(_vuex2.default);
 
 var store = new _vuex2.default.Store({
   state: _state2.default,
-  motations: _mutations2.default,
+  mutations: _mutations2.default,
   actions: actions,
   getters: getters
 });

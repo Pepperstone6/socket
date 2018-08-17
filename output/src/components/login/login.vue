@@ -1,7 +1,9 @@
 <template>
   <div id="login">
     <div>
-        <img src="" alt="">
+        <div class="login-icon">
+          <img src="@/assets/images/login.jpeg" alt="">
+        </div>
         <form action="" id="form">
           <div class="user-wrap">
             <icon name="user" width="20" color="#999" height="20" ></icon>
@@ -44,12 +46,14 @@ export default {
           password: _this.password
         }
       }).then(res => {
-        if(res.data.success){
+        let data = res.data
+        if(data.success){
           Toast({
-            message: res.data.msg,
+            message: '登陆成功',
             position: "middle",
             duration: 1500
           });
+          this.$store.dispatch('setUserInfo', data)
           setTimeout(()=>{
             _this.$router.push('/index')
           },1500)
@@ -79,6 +83,14 @@ export default {
   a{
     color: #666;
     text-decoration: none;
+  }
+}
+.login-icon{
+  width: 100%;
+  margin-bottom: 10px;
+  img{
+    display: block;
+    width: 100%;
   }
 }
 </style>

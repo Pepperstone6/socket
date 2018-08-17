@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.register = register;
 exports.login = login;
 exports.verityInfo = verityInfo;
+exports.addFriend = addFriend;
 
 var _model = require('./model');
 
@@ -35,4 +36,12 @@ function verityInfo(req, res) {
     res.send(data);
   };
   db.verityInfo(req, callback);
+}
+
+function addFriend(req, res) {
+  var callback = function callback(data) {
+    res.send(data);
+  };
+  var params = req.query;
+  db.addFriend(params, callback);
 }

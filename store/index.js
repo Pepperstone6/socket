@@ -3,12 +3,12 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 import state from './state'
-import motations from './mutations'
+import mutations from './mutations'
 import * as actions from './actions'
 import * as getters from './getter'
 const store = new Vuex.Store({
   state,
-  motations,
+  mutations,
   actions,
   getters
 })

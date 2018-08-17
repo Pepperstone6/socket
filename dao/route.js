@@ -23,3 +23,11 @@ export function verityInfo(req, res){
   }
   db.verityInfo(req, callback)
 }
+
+export function addFriend(req, res){
+  let callback = function (data){
+    res.send(data)
+  }
+  let params = req.query
+  db.addFriend(params,callback)
+}

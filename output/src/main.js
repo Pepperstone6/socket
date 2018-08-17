@@ -20,14 +20,18 @@ var _Icon = require('vue2-svg-icon/Icon.vue');
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
+require('./assets/css/public.css');
+
+var _index = require('../store/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_vue2.default.component('icon', _Icon2.default);
-
-// import store from '../store/index.js'
-// Icon.inject('user')
-// The Vue build version to load with the `import` command
+_vue2.default.component('icon', _Icon2.default); // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+
+// Icon.inject('user')
 _vue2.default.config.productionTip = false;
 _axios2.default.defaults.headers['Content-Type'] = 'application/json';
 _axios2.default.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -37,6 +41,7 @@ _vue2.default.prototype.$http = _axios2.default;
 new _vue2.default({
   el: '#app',
   router: _router2.default,
+  store: _index2.default,
   components: { App: _App2.default },
   template: '<App/>'
 });

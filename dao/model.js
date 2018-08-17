@@ -18,14 +18,17 @@ import {
 import {
   mailVerify
 } from './util/mailVerify.js'
+let transliteration = require('transliteration')
+let pinyinlite = require('pinyinlite')
 let formidable = require('formidable')
 export function register(req, callback) {
   let form = new formidable.IncomingForm()
   let obj = {}
   let date = new Date().getTime()
+  // console.log(transliteration.transliterate('@dsad`你好，世界'))
   form.parse(req, function (err, fields, files) {
     // console.log(fields,222, files,111)
-
+ 
     let {
       username,
       nickname,
@@ -36,29 +39,29 @@ export function register(req, callback) {
     findVerify(verifyModel, {
       mobile
     }).then(res => {
-      if(!res){
-        obj = {
-          success: false,
-          msg: '验证码不正确,请重新输入'
-        }
-        callback(obj)
-        return
-      }
-      if(res.verifyCode != verifyCode){
-        obj = {
-          success: false,
-          msg: '验证码不正确,请重新输入'
-        }
-        callback(obj)
-        return
-      }else if(date-res.date>300000){
-        obj = {
-          success: false,
-          msg: '验证码已过期'
-        }
-        callback(obj)
-        return
-      }
+      // if(!res){
+      //   obj = {
+      //     success: false,
+      //     msg: '验证码不正确,请重新输入'
+      //   }
+      //   callback(obj)
+      //   return
+      // }
+      // if(res.verifyCode != verifyCode){
+      //   obj = {
+      //     success: false,
+      //     msg: '验证码不正确,请重新输入'
+      //   }
+      //   callback(obj)
+      //   return
+      // }else if(date-res.date>300000){
+      //   obj = {
+      //     success: false,
+      //     msg: '验证码已过期'
+      //   }
+      //   callback(obj)
+      //   return
+      // }
 
       if (!username) {
         obj = {
@@ -67,7 +70,14 @@ export function register(req, callback) {
         }
         callback(obj)
         return
-      } else if (!nickname) {
+      } else if(/[^\w\./|_]/ig.test(username)){
+        obj = {
+          success: false,
+          msg: '用户名只允许数字,_或者字母'
+        }
+        callback(obj)
+        return
+      }else if (!nickname) {
         obj = {
           success: false,
           msg: '昵称不能为空'
@@ -88,6 +98,12 @@ export function register(req, callback) {
         }
         callback(obj)
         return
+      }
+      let chat = pinyinlite(nickname)[0]
+      if(chat.length){
+        fields.chat = chat[0].substr(0,1).toUpperCase()
+      }else{
+        fields.chat = '#'
       }
       let findBc = (res) => {
         if (res.length) {
@@ -136,9 +152,10 @@ export function login(req, callback) {
       username,
       password
     } = fields
+    console.log(fields)
     if (!username) {
       let obj = {
-        success: true,
+        success: false,
         msg: '用户名不能为空'
       }
       callback(obj)
@@ -146,7 +163,7 @@ export function login(req, callback) {
 
     } else if (!password) {
       let obj = {
-        success: true,
+        success: false,
         msg: '密码不能为空'
       }
       callback(obj)
@@ -165,7 +182,7 @@ export function verityInfo(req, callback) {
     } = fields
     if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(mobile)) {
       let obj = {
-        success: true,
+        success: false,
         msg: '请输入正确的手机号'
       }
       callback(obj)
@@ -219,4 +236,28 @@ export function verityInfo(req, callback) {
       mailVerify(mobile, code, verityBc)
     })
   })
+}
+
+export function addFriend(params, callback){
+  let selectBc = (res) =>{
+    if(res.length){
+      if(res.username != params.requestname){
+        
+      }else{
+        let obj = {
+          success: false,
+          msg: '不能将自己添加到通讯录'
+        }
+        callback(obj)
+      }
+      callback(res)
+    }else{
+      let obj = {
+        success: false,
+        msg: '该用户不存在'
+      }
+      callback(obj)
+    }
+  }
+  find(userModel, {username: params.friendname}, selectBc)
 }

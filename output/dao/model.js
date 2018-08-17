@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.register = register;
 exports.login = login;
 exports.verityInfo = verityInfo;
+exports.addFriend = addFriend;
 
 var _collections = require('./collections');
 
@@ -15,11 +16,14 @@ var _mongoose = require('mongoose');
 
 var _mailVerify = require('./util/mailVerify.js');
 
+var transliteration = require('transliteration');
+var pinyinlite = require('pinyinlite');
 var formidable = require('formidable');
 function register(req, callback) {
   var form = new formidable.IncomingForm();
   var obj = {};
   var date = new Date().getTime();
+  // console.log(transliteration.transliterate('@dsad`你好，世界'))
   form.parse(req, function (err, fields, files) {
     // console.log(fields,222, files,111)
 
@@ -32,34 +36,41 @@ function register(req, callback) {
     (0, _util.findVerify)(_collections.verifyModel, {
       mobile: mobile
     }).then(function (res) {
-      if (!res) {
-        obj = {
-          success: false,
-          msg: '验证码不正确,请重新输入'
-        };
-        callback(obj);
-        return;
-      }
-      if (res.verifyCode != verifyCode) {
-        obj = {
-          success: false,
-          msg: '验证码不正确,请重新输入'
-        };
-        callback(obj);
-        return;
-      } else if (date - res.date > 300000) {
-        obj = {
-          success: false,
-          msg: '验证码已过期'
-        };
-        callback(obj);
-        return;
-      }
+      // if(!res){
+      //   obj = {
+      //     success: false,
+      //     msg: '验证码不正确,请重新输入'
+      //   }
+      //   callback(obj)
+      //   return
+      // }
+      // if(res.verifyCode != verifyCode){
+      //   obj = {
+      //     success: false,
+      //     msg: '验证码不正确,请重新输入'
+      //   }
+      //   callback(obj)
+      //   return
+      // }else if(date-res.date>300000){
+      //   obj = {
+      //     success: false,
+      //     msg: '验证码已过期'
+      //   }
+      //   callback(obj)
+      //   return
+      // }
 
       if (!username) {
         obj = {
           success: false,
           msg: '用户名不能为空'
+        };
+        callback(obj);
+        return;
+      } else if (/[^\w\./|_]/ig.test(username)) {
+        obj = {
+          success: false,
+          msg: '用户名只允许数字,_或者字母'
         };
         callback(obj);
         return;
@@ -84,6 +95,12 @@ function register(req, callback) {
         };
         callback(obj);
         return;
+      }
+      var chat = pinyinlite(nickname)[0];
+      if (chat.length) {
+        fields.chat = chat[0].substr(0, 1).toUpperCase();
+      } else {
+        fields.chat = '#';
       }
       var findBc = function findBc(res) {
         if (res.length) {
@@ -131,16 +148,17 @@ function login(req, callback) {
     var username = fields.username,
         password = fields.password;
 
+    console.log(fields);
     if (!username) {
       var obj = {
-        success: true,
+        success: false,
         msg: '用户名不能为空'
       };
       callback(obj);
       return;
     } else if (!password) {
       var _obj3 = {
-        success: true,
+        success: false,
         msg: '密码不能为空'
       };
       callback(_obj3);
@@ -158,7 +176,7 @@ function verityInfo(req, callback) {
 
     if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(mobile)) {
       var obj = {
-        success: true,
+        success: false,
         msg: '请输入正确的手机号'
       };
       callback(obj);
@@ -195,7 +213,11 @@ function verityInfo(req, callback) {
             } else {
               verifyInfo.verifyCode = code;
               verifyInfo.date = date;
-              (0, _util.save)(verifyInfo);
+
+              var changeBc = function changeBc() {
+                callback(stutas);
+              };
+              (0, _util.save)(verifyInfo, changeBc);
             }
           };
           (0, _util.findOne)(_collections.verifyModel, {
@@ -208,4 +230,20 @@ function verityInfo(req, callback) {
       (0, _mailVerify.mailVerify)(mobile, code, verityBc);
     });
   });
+}
+
+function addFriend(params, callback) {
+  var selectBc = function selectBc(res) {
+    if (res.length) {
+      console.log(res);
+      callback(res);
+    } else {
+      var obj = {
+        success: false,
+        msg: '该用户不存在'
+      };
+      callback(obj);
+    }
+  };
+  (0, _util.find)(_collections.userModel, { username: params.friendname }, selectBc);
 }

@@ -17,15 +17,17 @@ export function findUser(Model, config, callback){
     if(err){
       console.error(err)
     }
-    if(data.password == password){
+    if(data && data.password == password){
       let obj = {
         success: true,
-        msg: '登陆成功'
+        username: data.username,
+        nickname: data.nickname,
+        avatar: data.avatar
       }
       callback(obj)
     }else{
       let obj = {
-        success: true,
+        success: false,
         msg: '账号或密码错误'
       }
       callback(obj)

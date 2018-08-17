@@ -32,9 +32,15 @@ const Relative = (resolve) => {
     resolve(module)
   })
 }
+const Search = (resolve) => {
+  import('com/search/search').then(module => {
+    resolve(module)
+  })
+}
 Vue.use(Router)
 
 export default new Router({
+  hash:"history",
   routes: [
     {
       path: '/',
@@ -50,6 +56,11 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: Register
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: Search
     },
     {
       path: '/index',

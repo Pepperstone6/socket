@@ -36,6 +36,21 @@ var Index = function Index(resolve) {
   });
 };
 
+var Message = function Message(resolve) {
+  import('com/message/message').then(function (module) {
+    resolve(module);
+  });
+};
+var Relative = function Relative(resolve) {
+  import('com/relative/relative').then(function (module) {
+    resolve(module);
+  });
+};
+var Search = function Search(resolve) {
+  import('com/search/search').then(function (module) {
+    resolve(module);
+  });
+};
 _vue2.default.use(_vueRouter2.default);
 
 exports.default = new _vueRouter2.default({
@@ -52,8 +67,25 @@ exports.default = new _vueRouter2.default({
     name: 'register',
     component: Register
   }, {
+    path: '/search',
+    name: 'search',
+    component: Search
+  }, {
     path: '/index',
     name: 'index',
-    component: Index
+    component: Index,
+    children: [{
+      path: 'message',
+      component: Message
+    }, {
+      path: 'relative',
+      component: Relative
+    }, {
+      path: 'look',
+      component: Message
+    }, {
+      path: 'dong',
+      component: Message
+    }]
   }]
 });

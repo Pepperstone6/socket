@@ -1,9 +1,17 @@
 <template>
-  <div></div>
+  <div>
+    <router-view></router-view>
+    <index-foot></index-foot>
+  </div>
 </template>
 <script>
-export default {}
+import IndexFoot from 'com/footer/foot'
+export default {
+  components:{
+    IndexFoot
+  }
+};
 </script>
-<style>
+<style lang="less">
 </style>
 
