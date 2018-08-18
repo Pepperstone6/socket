@@ -11,9 +11,10 @@ var userSchema = new mongoose.Schema({
   nickname: String,
   mobile: String,
   password: String,
+  sex: { type: Number, max: 1, min: 0, default: 0 },
   chat: String,
   friend: [{
-    type: Schema.Types.ObjectId,
+    type: String,
     ref: 'user'
   }],
   avatar: {

@@ -37,6 +37,16 @@ const Search = (resolve) => {
     resolve(module)
   })
 }
+const AddFrinend = (resolve) => {
+  import('com/addFriend/addFriend').then(module => {
+    resolve(module)
+  })
+}
+const RequestAdd = (resolve) => {
+  import('com/requestAdd/requestAdd').then(module => {
+    resolve(module)
+  })
+}
 Vue.use(Router)
 
 export default new Router({
@@ -61,6 +71,16 @@ export default new Router({
       path: '/search',
       name: 'search',
       component: Search
+    },
+    {
+      path: '/addfriend',
+      name:'addfriend',
+      component: AddFrinend
+    },
+    {
+      path:'/requestadd',
+      name:'requestadd',
+      component:RequestAdd
     },
     {
       path: '/index',

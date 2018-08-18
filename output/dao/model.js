@@ -235,15 +235,35 @@ function verityInfo(req, callback) {
 function addFriend(params, callback) {
   var selectBc = function selectBc(res) {
     if (res.length) {
-      console.log(res);
-      callback(res);
+      if (res.username != params.requestname) {
+        var friendInfo = res[0];
+        var obj = {
+          success: true,
+          data: {
+            username: friendInfo.username,
+            nickname: friendInfo.nickname,
+            avatar: friendInfo.avatar,
+            sex: friendInfo.sex
+          }
+        };
+        console.log(res);
+        callback(obj);
+      } else {
+        var _obj4 = {
+          success: false,
+          msg: '不能将自己添加到通讯录'
+        };
+        callback(_obj4);
+      }
+      // callback(res)
     } else {
-      var obj = {
+      var _obj5 = {
         success: false,
         msg: '该用户不存在'
       };
-      callback(obj);
+      callback(_obj5);
     }
   };
+  console.log(params);
   (0, _util.find)(_collections.userModel, { username: params.friendname }, selectBc);
 }

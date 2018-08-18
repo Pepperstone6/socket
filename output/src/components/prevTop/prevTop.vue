@@ -1,8 +1,8 @@
 <template>
   <mt-header fixed  :title="title">
-    <router-link to="/" slot="left">
-      <mt-button icon="back">返回</mt-button>
-    </router-link>
+    <a  slot="left">
+      <mt-button @click.native="back" icon="back">返回</mt-button>
+    </a>
   </mt-header>
 </template>
 <script>
@@ -15,6 +15,11 @@ export default {
     title:{
       type: String,
       default: '标题'
+    }
+  },
+  methods: {
+       back: function(){
+      this.$router.go(-1)
     }
   }
 };

@@ -242,7 +242,18 @@ export function addFriend(params, callback){
   let selectBc = (res) =>{
     if(res.length){
       if(res.username != params.requestname){
-        
+        let friendInfo = res[0]
+        let obj = {
+          success:true,
+          data:{
+            username: friendInfo.username,
+            nickname: friendInfo.nickname,
+            avatar: friendInfo.avatar,
+            sex: friendInfo.sex
+          }
+        }
+        console.log(res)
+        callback(obj)
       }else{
         let obj = {
           success: false,
@@ -250,7 +261,7 @@ export function addFriend(params, callback){
         }
         callback(obj)
       }
-      callback(res)
+      // callback(res)
     }else{
       let obj = {
         success: false,
@@ -259,5 +270,6 @@ export function addFriend(params, callback){
       callback(obj)
     }
   }
+  console.log(params)
   find(userModel, {username: params.friendname}, selectBc)
 }

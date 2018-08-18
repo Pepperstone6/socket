@@ -51,9 +51,15 @@ var Search = function Search(resolve) {
     resolve(module);
   });
 };
+var AddFrinend = function AddFrinend(resolve) {
+  import('com/addFriend/addFriend').then(function (module) {
+    resolve(module);
+  });
+};
 _vue2.default.use(_vueRouter2.default);
 
 exports.default = new _vueRouter2.default({
+  hash: "history",
   routes: [{
     path: '/',
     name: 'login',
@@ -70,6 +76,10 @@ exports.default = new _vueRouter2.default({
     path: '/search',
     name: 'search',
     component: Search
+  }, {
+    path: '/addfriend',
+    name: 'addfriend',
+    component: AddFrinend
   }, {
     path: '/index',
     name: 'index',

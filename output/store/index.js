@@ -28,6 +28,12 @@ var _getter = require('./getter');
 
 var getters = _interopRequireWildcard(_getter);
 
+var _vuexPersistedstate = require('vuex-persistedstate');
+
+var _vuexPersistedstate2 = _interopRequireDefault(_vuexPersistedstate);
+
+var _persistedstate = require('./pulgins/persistedstate.js');
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -38,7 +44,8 @@ var store = new _vuex2.default.Store({
   state: _state2.default,
   mutations: _mutations2.default,
   actions: actions,
-  getters: getters
+  getters: getters,
+  plugins: [(0, _vuexPersistedstate2.default)(_persistedstate.presistedConfig)]
 });
 
 exports.default = store;

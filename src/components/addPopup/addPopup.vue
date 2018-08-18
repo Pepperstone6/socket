@@ -5,11 +5,14 @@
   <div class="search-wrap">
     <div :class="['search',{'addwidth':!isShow}]">
       <icon name="search" width="20" height="20"></icon>
+      <!-- <form :onsubmit="searchFriend" action="#"> -->
       <mt-field v-cfocus="isShow" v-model="friend" placeholder="搜索朋友" :disableClear='true'>
       </mt-field>
+       <!-- </form> -->
     </div>
     <mt-button :class="['cancel',{isshow:isShow}]" @click.native="cclose"   type="primary" size="small">取消</mt-button>  
   </div>
+ 
    <div class="my-account" v-if="!result">
         我的逗比号:{{douAccount}}
     </div>
@@ -49,6 +52,7 @@ export default {
     cclose: function(ev){
       console.log(ev)
       this.closeFriend(false)
+      return false
     },
     searchFriend:function(){
       const _this = this
@@ -61,13 +65,13 @@ export default {
         }
       }).then(res=>{
         let data = res.data
-        console.log(data)
         if(data.success){
-          console.log(res)
+          this.$router.push({name: 'addfriend', params:{friendInfo: data.data}})
         }else{
           this.result = true
         }
       })
+    return false
     }
   },
   computed:{
@@ -83,9 +87,11 @@ export default {
         inputNode.onfocus = function(){
           vnode.context[bind.expression] = false
         }
-        // inputNode.onblur = function(){
-        //   vnode.context[bind.expression] = true
-        // }
+        inputNode.onkeypress= function(ev){
+          if(ev.keyCode === 13){
+            vnode.context.searchFriend()
+          }
+        }
       }
     }
   },

@@ -32,7 +32,6 @@
       </mt-index-section>
     </mt-index-list>
     <popup :popupVisible="isShow" :closePopup="closePopup"></popup> 
-    <add-popup :isAdd="isAdd" :closeFriend="closeFriend"></add-popup>
   </div>
 </template>
 <script>
@@ -47,8 +46,7 @@ import Popup from 'com/popup/popup'
 export default {
   data(){
     return{
-      isShow:false,
-      isAdd: false
+      isShow:false
     }
   },
   // mounted(){
@@ -68,11 +66,9 @@ export default {
       this.$set(this,'isShow', isShow)
     },
     addFriend: function(){
-       this.isAdd=true
+      //  this.isAdd=true
+      this.$router.push('/search')
       // this.$set(this,'isAdd', isAdd)
-    },
-    closeFriend: function(isAdd){
-      this.$set(this,'isAdd', isAdd)
     }
   },
   components:{
