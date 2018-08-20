@@ -18,15 +18,17 @@ exports.findVerify = findVerify;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function add(Model, config, callback) {
-  var record = new Model(config);
-  record.save(function (err, data) {
-    if (err) {
-      console.error(err);
-    }
-    console.log(data + '\u521B\u5EFA\u6210\u529F');
-    if (callback) {
-      callback(data);
-    }
+  return new _promise2.default(function (resolve, reject) {
+    var record = new Model(config);
+    record.save(function (err, data) {
+      if (err) {
+        console.error(err);
+      }
+      if (callback) {
+        callback(data);
+      }
+      resolve(data);
+    });
   });
 }
 
@@ -34,7 +36,13 @@ function findUser(Model, config, callback) {
   var username = config.username,
       password = config.password;
 
-  Model.findOne({ $or: [{ username: username }, { mobile: username }] }, function (err, data) {
+  Model.findOne({
+    $or: [{
+      username: username
+    }, {
+      mobile: username
+    }]
+  }, function (err, data) {
     if (err) {
       console.error(err);
     }
@@ -57,13 +65,17 @@ function findUser(Model, config, callback) {
 }
 
 function find(Model, obj, callback) {
-  Model.find(obj, function (err, data) {
-    if (err) {
-      console.error(err);
-    }
-    if (callback) {
-      callback(data);
-    }
+  return new _promise2.default(function (resolve, reject) {
+    Model.find(obj, function (err, data) {
+      if (err) {
+        console.error(err);
+        reject(err);
+      }
+      if (callback) {
+        callback(data);
+      }
+      resolve(data);
+    });
   });
 }
 

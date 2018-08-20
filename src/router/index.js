@@ -47,6 +47,11 @@ const RequestAdd = (resolve) => {
     resolve(module)
   })
 }
+const AgreeFriend = (resolve) => {
+  import('com/agreeFriend/agreeFriend').then(module => {
+    resolve(module)
+  })
+}
 Vue.use(Router)
 
 export default new Router({
@@ -83,6 +88,11 @@ export default new Router({
       component:RequestAdd
     },
     {
+      path:'/agreefriend',
+      name:'agreefriend',
+      component:AgreeFriend
+    },
+    {
       path: '/index',
       name: 'index',
       component: Index,
@@ -93,7 +103,7 @@ export default new Router({
         },
         {
           path: 'relative',
-          component:Relative
+          component:Relative,
         },
         {
           path: 'look',

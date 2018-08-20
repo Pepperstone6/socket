@@ -56,6 +56,16 @@ var AddFrinend = function AddFrinend(resolve) {
     resolve(module);
   });
 };
+var RequestAdd = function RequestAdd(resolve) {
+  import('com/requestAdd/requestAdd').then(function (module) {
+    resolve(module);
+  });
+};
+var AgreeFriend = function AgreeFriend(resolve) {
+  import('com/agreeFriend/agreeFriend').then(function (module) {
+    resolve(module);
+  });
+};
 _vue2.default.use(_vueRouter2.default);
 
 exports.default = new _vueRouter2.default({
@@ -80,6 +90,14 @@ exports.default = new _vueRouter2.default({
     path: '/addfriend',
     name: 'addfriend',
     component: AddFrinend
+  }, {
+    path: '/requestadd',
+    name: 'requestadd',
+    component: RequestAdd
+  }, {
+    path: '/agreefriend',
+    name: 'agreefriend',
+    component: AgreeFriend
   }, {
     path: '/index',
     name: 'index',

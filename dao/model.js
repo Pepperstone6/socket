@@ -1,6 +1,7 @@
 import {
   userModel,
-  verifyModel
+  verifyModel,
+  requestVerifyModel
 } from './collections'
 import {
   add,
@@ -240,9 +241,11 @@ export function verityInfo(req, callback) {
 
 export function addFriend(params, callback){
   let selectBc = (res) =>{
+    console.log(res)
     if(res.length){
-      if(res.username != params.requestname){
-        let friendInfo = res[0]
+      let friendInfo = res[0]
+      console.log(123)
+      if(friendInfo.username != params.requestname){
         let obj = {
           success:true,
           data:{
@@ -252,7 +255,6 @@ export function addFriend(params, callback){
             sex: friendInfo.sex
           }
         }
-        console.log(res)
         callback(obj)
       }else{
         let obj = {
@@ -272,4 +274,67 @@ export function addFriend(params, callback){
   }
   console.log(params)
   find(userModel, {username: params.friendname}, selectBc)
+}
+
+export function requestAdd(req, callback){
+  let form = new formidable.IncomingForm()
+  form.parse(req, function(err, fields, files){
+    if(err){
+      console.error(err)
+    }
+    console.log(fields)
+    let {requestname, friendname,remark, friendavatar} = fields
+    let config = {
+      requestname,
+      friendname,
+      friendavatar
+    }
+    if(requestname === friendname){
+      let obj = {
+        success: false,
+        msg: '没办法添加自己到通讯录'
+      }
+      callback(obj)
+      return
+    }
+    // let findResult = () => {
+
+    // }
+    find(requestVerifyModel, config).then(data => {
+      if(data.length){
+        let obj = {
+          success: false,
+          msg: '你已发送过请求，请等待对方验证'
+        }
+        callback(obj)
+        return
+      }
+      let params = {
+        requestname,
+        friendname,
+        remark,
+        friendavatar,
+        friendInfo: friendname
+      }
+      let addResult = (addData) => {
+        let obj = {
+          success: true,
+          msg: '请求已发送，等待对方验证'
+        }
+        callback(obj)
+      }
+      add(requestVerifyModel, params, addResult)
+    })
+  })
+}
+
+export function getRequestFriend(username, callback){
+  
+  find(requestVerifyModel, {friendname: username}).then(res => {
+    let obj ={
+      success: true,
+      data: res
+    }
+    callback(obj)
+  })
 }

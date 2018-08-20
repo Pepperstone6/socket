@@ -7,6 +7,8 @@ exports.register = register;
 exports.login = login;
 exports.verityInfo = verityInfo;
 exports.addFriend = addFriend;
+exports.requestAdd = requestAdd;
+exports.getRequestFriend = getRequestFriend;
 
 var _collections = require('./collections');
 
@@ -234,9 +236,11 @@ function verityInfo(req, callback) {
 
 function addFriend(params, callback) {
   var selectBc = function selectBc(res) {
+    console.log(res);
     if (res.length) {
-      if (res.username != params.requestname) {
-        var friendInfo = res[0];
+      var friendInfo = res[0];
+      console.log(123);
+      if (friendInfo.username != params.requestname) {
         var obj = {
           success: true,
           data: {
@@ -246,7 +250,6 @@ function addFriend(params, callback) {
             sex: friendInfo.sex
           }
         };
-        console.log(res);
         callback(obj);
       } else {
         var _obj4 = {
@@ -266,4 +269,71 @@ function addFriend(params, callback) {
   };
   console.log(params);
   (0, _util.find)(_collections.userModel, { username: params.friendname }, selectBc);
+}
+
+function requestAdd(req, callback) {
+  var form = new formidable.IncomingForm();
+  form.parse(req, function (err, fields, files) {
+    if (err) {
+      console.error(err);
+    }
+    console.log(fields);
+    var requestname = fields.requestname,
+        friendname = fields.friendname,
+        remark = fields.remark,
+        friendavatar = fields.friendavatar;
+
+    var config = {
+      requestname: requestname,
+      friendname: friendname,
+      friendavatar: friendavatar
+    };
+    if (requestname === friendname) {
+      var obj = {
+        success: false,
+        msg: '没办法添加自己到通讯录'
+      };
+      callback(obj);
+      return;
+    }
+    // let findResult = () => {
+
+    // }
+    (0, _util.find)(_collections.requestVerifyModel, config).then(function (data) {
+      if (data.length) {
+        var _obj6 = {
+          success: false,
+          msg: '你已发送过请求，请等待对方验证'
+        };
+        callback(_obj6);
+        return;
+      }
+      var params = {
+        requestname: requestname,
+        friendname: friendname,
+        remark: remark,
+        friendavatar: friendavatar,
+        friendInfo: friendname
+      };
+      var addResult = function addResult(addData) {
+        var obj = {
+          success: true,
+          msg: '请求已发送，等待对方验证'
+        };
+        callback(obj);
+      };
+      (0, _util.add)(_collections.requestVerifyModel, params, addResult);
+    });
+  });
+}
+
+function getRequestFriend(username, callback) {
+
+  (0, _util.find)(_collections.requestVerifyModel, { friendname: username }).then(function (res) {
+    var obj = {
+      success: true,
+      data: res
+    };
+    callback(obj);
+  });
 }

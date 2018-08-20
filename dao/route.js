@@ -31,3 +31,18 @@ export function addFriend(req, res){
   let params = req.query
   db.addFriend(params,callback)
 }
+export function requestAdd(req, res){
+  let callback = (data) => {
+    res.send(data)
+  }
+  db.requestAdd(req, callback)
+}
+
+export function getRequestFriend(req, res){
+  let callback = (data) => {
+    res.send(data)
+  }
+  console.log(req.query)
+  let username = req.query.username
+  db.getRequestFriend(username, callback)
+}

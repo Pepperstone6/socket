@@ -7,6 +7,8 @@ exports.register = register;
 exports.login = login;
 exports.verityInfo = verityInfo;
 exports.addFriend = addFriend;
+exports.requestAdd = requestAdd;
+exports.getRequestFriend = getRequestFriend;
 
 var _model = require('./model');
 
@@ -44,4 +46,19 @@ function addFriend(req, res) {
   };
   var params = req.query;
   db.addFriend(params, callback);
+}
+function requestAdd(req, res) {
+  var callback = function callback(data) {
+    res.send(data);
+  };
+  db.requestAdd(req, callback);
+}
+
+function getRequestFriend(req, res) {
+  var callback = function callback(data) {
+    res.send(data);
+  };
+  console.log(req.query);
+  var username = req.query.username;
+  db.getRequestFriend(username, callback);
 }

@@ -51,7 +51,12 @@ export default {
       this.isShow = true;
     },
     addFriend: function(ev){
-      this.$router.push({name:'requestadd',params:{friendusername: this.friendInfo.username}})
+      const _this = this
+      this.$router.push({name:'requestadd',params:{
+        friendusername: _this.friendInfo.username,
+        requestname: _this.$store.state.userInfo.username, 
+        avatar: _this.friendInfo.avatar,
+        requestnickname: _this.$store.state.userInfo.nickname}})
     }
   },
   components: {

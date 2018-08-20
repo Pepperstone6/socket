@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
-
+//用户表
 var userSchema = new mongoose.Schema({
   username: String,
   nickname: String,
@@ -23,11 +23,25 @@ var userSchema = new mongoose.Schema({
   }
 });
 
+//验证码表
 var verifyCode = new mongoose.Schema({
   mobile: Number,
   verifyCode: Number,
   date: Number
 });
 
+//请求添加好友验证表
+var requestVerify = new mongoose.Schema({
+  requestname: String,
+  friendname: String,
+  ramark: String,
+  isAgree: {
+    type: Number,
+    default: 0
+  },
+  friendavatar: String
+});
+
 var userModel = exports.userModel = mongoose.model('user', userSchema);
 var verifyModel = exports.verifyModel = mongoose.model('verify', verifyCode);
+var requestVerifyModel = exports.requestVerifyModel = mongoose.model('requestVerify', requestVerify);
