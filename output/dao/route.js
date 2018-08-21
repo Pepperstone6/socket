@@ -9,6 +9,8 @@ exports.verityInfo = verityInfo;
 exports.addFriend = addFriend;
 exports.requestAdd = requestAdd;
 exports.getRequestFriend = getRequestFriend;
+exports.agreeFriendInfo = agreeFriendInfo;
+exports.agreeRequest = agreeRequest;
 
 var _model = require('./model');
 
@@ -58,7 +60,21 @@ function getRequestFriend(req, res) {
   var callback = function callback(data) {
     res.send(data);
   };
-  console.log(req.query);
   var username = req.query.username;
   db.getRequestFriend(username, callback);
+}
+
+function agreeFriendInfo(req, res) {
+  var callback = function callback(data) {
+    res.send(data);
+  };
+  var requestname = req.query.requestname;
+  db.agreeFriendInfo(requestname, callback);
+}
+
+function agreeRequest(req, res) {
+  var callback = function callback(data) {
+    console.log(data);
+  };
+  db.agreeRequest(req, callback);
 }

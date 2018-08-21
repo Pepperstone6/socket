@@ -13,4 +13,8 @@ router.get('/addFriend', route.addFriend)
 router.post('/requestAdd',route.requestAdd)
 //
 router.get('/getRequestFriend', route.getRequestFriend)
+//
+router.get('/agreeFriendInfo', route.agreeFriendInfo)
+//
+router.post('/agreeRequest', route.agreeRequest)
 export default router

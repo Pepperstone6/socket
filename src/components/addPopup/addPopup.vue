@@ -21,7 +21,7 @@
         搜索结果：<span>{{friend}}</span>
       </div>
       <div class="result" v-if="result">
-        该用户不存在
+        {{message}}
       </div>
     </div>
     <div>
@@ -45,7 +45,8 @@ export default {
     return{
       friend:"",
       isShow:true,
-      result:false
+      result:false,
+      message: ''
     }
   },
   methods:{
@@ -69,6 +70,7 @@ export default {
           this.$router.push({name: 'addfriend', params:{friendInfo: data.data}})
         }else{
           this.result = true
+          this.message = data.msg
         }
       })
     return false

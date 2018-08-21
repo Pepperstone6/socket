@@ -257,12 +257,15 @@ export function addFriend(params, callback){
         }
         callback(obj)
       }else{
+        console.log(123)
         let obj = {
           success: false,
           msg: '不能将自己添加到通讯录'
         }
         callback(obj)
+        return
       }
+      
       // callback(res)
     }else{
       let obj = {
@@ -282,12 +285,11 @@ export function requestAdd(req, callback){
     if(err){
       console.error(err)
     }
-    console.log(fields)
-    let {requestname, friendname,remark, friendavatar} = fields
+    console.log(fields,111)
+    let {requestname, friendname,requestremark, friendavatar,requestnickname} = fields
     let config = {
       requestname,
       friendname,
-      friendavatar
     }
     if(requestname === friendname){
       let obj = {
@@ -312,9 +314,9 @@ export function requestAdd(req, callback){
       let params = {
         requestname,
         friendname,
-        remark,
+        requestremark,
         friendavatar,
-        friendInfo: friendname
+        requestnickname
       }
       let addResult = (addData) => {
         let obj = {
@@ -336,5 +338,54 @@ export function getRequestFriend(username, callback){
       data: res
     }
     callback(obj)
+  })
+}
+export function agreeFriendInfo(requestname, callback){
+    findOne(userModel, {username: requestname}).then(data => {
+      console.log(data)
+      if(!data){
+        let obj = {
+          success: false,
+          msg: '该用户不存在'
+        }
+      }else{
+          let findResult = (findData) => {
+            console.log(findData)
+            let obj = {
+                success: true,
+                data:{
+                  sex: data.sex,
+                nickname: data.nickname,
+                name: data.username,
+                remark: findData.requestremark,
+                avatar:data.avatar,
+                isAgree: findData.isAgree
+                }
+  
+            }
+            callback(obj)
+          }
+          findOne(requestVerifyModel, {requestname: data.username}, findResult)
+      }
+      // let obj = {
+      //   success:true,
+      //   data:{
+      //     name: data.username,
+      //     avatar:data.avatar,
+      //     remark:
+      //   }
+      // }
+      // callback(obj)
+    })
+}
+
+export function agreeRequest(req, callback){
+  let form = new formidable.IncomingForm()
+  form.parse(req, function(err, fields, files){
+    let findResult = (data) => {
+      data.isAgree = 1
+      save(data)
+    }
+    findOne(requestVerifyModel, fields,findResult)
   })
 }

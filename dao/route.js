@@ -42,7 +42,21 @@ export function getRequestFriend(req, res){
   let callback = (data) => {
     res.send(data)
   }
-  console.log(req.query)
   let username = req.query.username
   db.getRequestFriend(username, callback)
+}
+
+export function agreeFriendInfo(req, res){
+  let callback = (data) => {
+    res.send(data)
+  }
+  let requestname = req.query.requestname
+  db.agreeFriendInfo(requestname, callback)
+}
+
+export function agreeRequest(req, res){
+  let callback = (data) => {
+    console.log(data)
+  }
+  db.agreeRequest(req, callback)
 }

@@ -87,7 +87,7 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .relative-header {
   width: 100%;
   height: 50px;

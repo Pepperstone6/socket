@@ -12,13 +12,18 @@
                 <div class="card-icon">
                   <img :src="item.friendavatar" alt="">
                 </div>
-                <span>{{item.friendname}}</span>
+                <div class="remark-wrap">
+                  <p>{{item.requestnickname}}</p>
+                  <p class="remark">{{item.requestremark}}</p>
+                </div>
+                <div class="selected" @click="getRequestFriend(item.requestname)" >查看</div>
             </div>
           </van-cell-group>
           <span slot="right">删除</span>
         </van-swipe-cell>
     </div>
     <popup :popupVisible="isShow" :closePopup="closePopup"></popup> 
+    <router-view></router-view>
   </div>
 </template>
 
@@ -49,6 +54,9 @@ export default {
     },
     closePopup: function(isShow) {
       this.$set(this, "isShow", isShow);
+    },
+    getRequestFriend: function(requestname){
+      this.$router.push({path:`/agreefriend/${requestname}`})
     }
   },
   mounted() {
@@ -104,6 +112,7 @@ export default {
   display: flex;
   align-items: center;
   box-sizing: border-box;
+  justify-content: space-between;
   padding: 0 20px;
   .card-icon{
     width: 60px;
@@ -113,6 +122,30 @@ export default {
       width: 100%;
     }
   }
+  .remark-wrap{
+    flex:1;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    p{
+      margin: 0;
+      font-size: 15px;
+    }
+    .remark{
+      color: #999;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+  }
+}
+.selected{
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #d6d6d6;
+  color:#000;
+  border-radius: 3px;
+  font-size: 12px;
 }
 </style>
 

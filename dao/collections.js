@@ -29,12 +29,13 @@ let verifyCode = new mongoose.Schema({
 let  requestVerify = new mongoose.Schema({
   requestname: String,
   friendname: String,
-  ramark: String,
+  requestremark: String,
   isAgree: {
     type: Number,
     default: 0
   },
-  friendavatar: String
+  friendavatar: String,
+  requestnickname: String
 })
 
 export const userModel = mongoose.model('user', userSchema)

@@ -66,6 +66,11 @@ var AgreeFriend = function AgreeFriend(resolve) {
     resolve(module);
   });
 };
+var AgreeFriendInfo = function AgreeFriendInfo(resolve) {
+  import('com/agreeFriendInfo/agreeFriendInfo').then(function (module) {
+    resolve(module);
+  });
+};
 _vue2.default.use(_vueRouter2.default);
 
 exports.default = new _vueRouter2.default({
@@ -98,6 +103,10 @@ exports.default = new _vueRouter2.default({
     path: '/agreefriend',
     name: 'agreefriend',
     component: AgreeFriend
+  }, {
+    path: '/agreefriend/:requestname',
+    name: 'agreefriendinfo',
+    component: AgreeFriendInfo
   }, {
     path: '/index',
     name: 'index',

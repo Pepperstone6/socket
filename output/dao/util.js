@@ -11,9 +11,9 @@ var _promise2 = _interopRequireDefault(_promise);
 exports.add = add;
 exports.findUser = findUser;
 exports.find = find;
-exports.findOne = findOne;
 exports.save = save;
 exports.findVerify = findVerify;
+exports.findOne = findOne;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -79,17 +79,6 @@ function find(Model, obj, callback) {
   });
 }
 
-function findOne(Model, obj, callback) {
-  Model.findOne(obj, function (err, data) {
-    if (err) {
-      console.error(err);
-    }
-    if (callback) {
-      callback(data);
-    }
-  });
-}
-
 function save(model, callback) {
   model.save(function (err, data) {
     if (err) {
@@ -110,6 +99,21 @@ function findVerify(Model, config, callback) {
       }
       resolve(data);
       reject(data);
+    });
+  });
+}
+
+function findOne(Model, config, callback) {
+  return new _promise2.default(function (resolve, reject) {
+    Model.findOne(config, function (err, data) {
+      if (err) {
+        console.error(err);
+        reject(err);
+      }
+      if (callback) {
+        callback(data);
+      }
+      resolve(data);
     });
   });
 }

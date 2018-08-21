@@ -41,7 +41,8 @@ export default {
           requestremark: _this.remark,
           requestname: _this.params.requestname,
           friendname: _this.params.friendusername,
-          friendavatar: _this.params.avatar
+          friendavatar: _this.params.avatar,
+          requestnickname: _this.params.requestnickname
         }
       }).then(res => {
         let data = res.data

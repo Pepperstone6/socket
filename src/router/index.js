@@ -52,6 +52,16 @@ const AgreeFriend = (resolve) => {
     resolve(module)
   })
 }
+const AgreeFriendInfo = (resolve) => {
+  import('com/agreeFriendInfo/agreeFriendInfo').then(module => {
+    resolve(module)
+  })
+}
+const MessageBox = (resolve) => {
+  import('com/messagebox/messagebox').then(module => {
+    resolve(module)
+  })
+}
 Vue.use(Router)
 
 export default new Router({
@@ -83,6 +93,11 @@ export default new Router({
       component: AddFrinend
     },
     {
+      path: '/messagebox',
+      name:'messagebox',
+      component: MessageBox
+    },
+    {
       path:'/requestadd',
       name:'requestadd',
       component:RequestAdd
@@ -91,6 +106,11 @@ export default new Router({
       path:'/agreefriend',
       name:'agreefriend',
       component:AgreeFriend
+    },
+    {
+      path:'/agreefriend/:requestname',
+      name:'agreefriendinfo',
+      component:AgreeFriendInfo
     },
     {
       path: '/index',

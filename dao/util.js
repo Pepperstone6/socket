@@ -61,16 +61,6 @@ export function find(Model, obj, callback) {
   })
 }
 
-export function findOne(Model, obj, callback) {
-  Model.findOne(obj, function (err, data) {
-    if (err) {
-      console.error(err)
-    }
-    if (callback) {
-      callback(data)
-    }
-  })
-}
 
 export function save(model, callback) {
   model.save(function (err, data) {
@@ -92,6 +82,21 @@ export function findVerify(Model, config, callback) {
       }
       resolve(data)
       reject(data)
+    })
+  })
+}
+
+export function findOne(Model, config, callback){
+  return new Promise((resolve,reject) => {
+    Model.findOne(config, function(err,data){
+      if(err){
+        console.error(err)
+        reject(err)
+      }
+      if(callback){
+        callback(data)
+      }
+      resolve(data)
     })
   })
 }

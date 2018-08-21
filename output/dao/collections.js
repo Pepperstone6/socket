@@ -34,12 +34,13 @@ var verifyCode = new mongoose.Schema({
 var requestVerify = new mongoose.Schema({
   requestname: String,
   friendname: String,
-  ramark: String,
+  requestremark: String,
   isAgree: {
     type: Number,
     default: 0
   },
-  friendavatar: String
+  friendavatar: String,
+  requestnickname: String
 });
 
 var userModel = exports.userModel = mongoose.model('user', userSchema);

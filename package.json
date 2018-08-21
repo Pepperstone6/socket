@@ -27,10 +27,12 @@
     "postcss": "^7.0.2",
     "rm": "^0.1.8",
     "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1",
     "transliteration": "^1.6.6",
     "vant": "^1.2.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
+    "vue-socket.io": "^2.1.1-b",
     "vuex": "^3.0.1",
     "vuex-persist": "^1.1.6",
     "vuex-persistedstate": "^2.5.4"

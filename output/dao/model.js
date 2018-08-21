@@ -9,6 +9,8 @@ exports.verityInfo = verityInfo;
 exports.addFriend = addFriend;
 exports.requestAdd = requestAdd;
 exports.getRequestFriend = getRequestFriend;
+exports.agreeFriendInfo = agreeFriendInfo;
+exports.agreeRequest = agreeRequest;
 
 var _collections = require('./collections');
 
@@ -252,12 +254,15 @@ function addFriend(params, callback) {
         };
         callback(obj);
       } else {
+        console.log(123);
         var _obj4 = {
           success: false,
           msg: '不能将自己添加到通讯录'
         };
         callback(_obj4);
+        return;
       }
+
       // callback(res)
     } else {
       var _obj5 = {
@@ -277,16 +282,16 @@ function requestAdd(req, callback) {
     if (err) {
       console.error(err);
     }
-    console.log(fields);
+    console.log(fields, 111);
     var requestname = fields.requestname,
         friendname = fields.friendname,
-        remark = fields.remark,
-        friendavatar = fields.friendavatar;
+        requestremark = fields.requestremark,
+        friendavatar = fields.friendavatar,
+        requestnickname = fields.requestnickname;
 
     var config = {
       requestname: requestname,
-      friendname: friendname,
-      friendavatar: friendavatar
+      friendname: friendname
     };
     if (requestname === friendname) {
       var obj = {
@@ -311,9 +316,9 @@ function requestAdd(req, callback) {
       var params = {
         requestname: requestname,
         friendname: friendname,
-        remark: remark,
+        requestremark: requestremark,
         friendavatar: friendavatar,
-        friendInfo: friendname
+        requestnickname: requestnickname
       };
       var addResult = function addResult(addData) {
         var obj = {
@@ -335,5 +340,54 @@ function getRequestFriend(username, callback) {
       data: res
     };
     callback(obj);
+  });
+}
+function agreeFriendInfo(requestname, callback) {
+  (0, _util.findOne)(_collections.userModel, { username: requestname }).then(function (data) {
+    console.log(data);
+    if (!data) {
+      var obj = {
+        success: false,
+        msg: '该用户不存在'
+      };
+    } else {
+      var findResult = function findResult(findData) {
+        console.log(findData);
+        var obj = {
+          success: true,
+          data: {
+            sex: data.sex,
+            nickname: data.nickname,
+            name: data.username,
+            remark: findData.requestremark,
+            avatar: data.avatar,
+            isAgree: findData.isAgree
+          }
+
+        };
+        callback(obj);
+      };
+      (0, _util.findOne)(_collections.requestVerifyModel, { requestname: data.username }, findResult);
+    }
+    // let obj = {
+    //   success:true,
+    //   data:{
+    //     name: data.username,
+    //     avatar:data.avatar,
+    //     remark:
+    //   }
+    // }
+    // callback(obj)
+  });
+}
+
+function agreeRequest(req, callback) {
+  var form = new formidable.IncomingForm();
+  form.parse(req, function (err, fields, files) {
+    var findResult = function findResult(data) {
+      data.isAgree = 1;
+      (0, _util.save)(data);
+    };
+    (0, _util.findOne)(_collections.requestVerifyModel, fields, findResult);
   });
 }
