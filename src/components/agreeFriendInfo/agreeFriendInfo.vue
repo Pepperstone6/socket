@@ -72,7 +72,7 @@ export default {
       })
     },
     getMessage: function(){
-      this.$router.push({path: '/messagebox', params:{friendname: this.friendInfo.name}})
+      this.$router.push({name: 'messagebox', params:{friendname: this.friendInfo.name,friendnickname:this.friendInfo.nickname}})
     }
   },
   components: {
@@ -81,7 +81,7 @@ export default {
 };
 </script>
 
-<style lang="less" >
+<style lang="less" scoped>
 .van-modal {
   background-color: #000;
 }
@@ -96,6 +96,7 @@ export default {
   padding: 0 20px;
   box-sizing: border-box;
   margin-top: 80px;
+  overflow: hidden;
   .icon {
     width: 60px;
     height: 60px;

@@ -10,6 +10,7 @@ const bodyParser = require('body-parser')
 
 import router from '../dao/router'
 mongoose.connect('mongodb://localhost/socket')
+
 let db = mongoose.connection
 db.on('error', console.error.bind(console, 'connetcion error;'));
 db.once('open',function(){
@@ -24,6 +25,8 @@ app.use(session({
   saveUninitialized:true
 }))
 app.use(express.static(path.resolve(__dirname, '../static/')))
+app.use(express.static(path.resolve(__dirname, '../public/')))
+
 
 app.use('/', router)
 http.listen(3001, function (){
@@ -34,6 +37,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }))
-io.on('connection', function(socket){
-  console.log('socket')
-})
+
+io.on('connection', function (socket) {
+  socket.on('message', function () { 
+
+  });
+  socket.on('disconnect', function () { });
+});
+

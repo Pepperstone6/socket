@@ -15,7 +15,8 @@
       </div>
     </div>
     <div class="submit">
-      <mt-button @click="agree" type="primary" size="large">通过验证</mt-button>
+      <mt-button v-if="friendInfo&&!friendInfo.isAgree" @click="agree" type="primary" size="large">通过验证</mt-button>
+       <mt-button v-if="friendInfo&&friendInfo.isAgree" @click="getMessage"  type="primary" size="large">发送消息</mt-button>
     </div>
   </div>
 </template>
@@ -43,7 +44,6 @@ export default {
       }
     }).then(res => {
       let data = res.data;
-      console.log(data);
       if (data.success) {
         this.friendInfo = data.data;
       }
@@ -70,6 +70,9 @@ export default {
       }).then(res => {
         console.log(res)
       })
+    },
+    getMessage: function(){
+      this.$router.push({name: 'messagebox', params:{friendname: this.friendInfo.name,friendnickname:this.friendInfo.nickname}})
     }
   },
   components: {

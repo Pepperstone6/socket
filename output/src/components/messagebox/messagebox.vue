@@ -13,7 +13,6 @@
               rows="1"
               :border='false'
               autosize
-              icon="user"
             />
           </van-cell-group>
       </div>
@@ -50,7 +49,6 @@ export default {
 .tool {
   background: #d6d6d6;
   padding: 5px 0;
-  box-sizing: border-box;
   .van-cell-group {
     margin: 0 2%;
 
@@ -68,6 +66,10 @@ export default {
       line-height: 20px;
       box-sizing: border-box;
       caret-color: #26a2ff;
+    }
+    textarea:focus {
+      border: 2px solid #26a2ff;
+      box-sizing: border-box;
     }
   }
 }

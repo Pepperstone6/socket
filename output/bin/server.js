@@ -17,6 +17,7 @@ var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
 
 mongoose.connect('mongodb://localhost/socket');
+
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connetcion error;'));
 db.once('open', function () {
@@ -31,6 +32,7 @@ app.use(session({
   saveUninitialized: true
 }));
 app.use(express.static(path.resolve(__dirname, '../static/')));
+app.use(express.static(path.resolve(__dirname, '../public/')));
 
 app.use('/', _router2.default);
 http.listen(3001, function () {
@@ -41,6 +43,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+
 io.on('connection', function (socket) {
-  console.log('socket');
+  socket.on('message', function () {});
+  socket.on('disconnect', function () {});
 });

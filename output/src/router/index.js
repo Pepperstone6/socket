@@ -71,6 +71,11 @@ var AgreeFriendInfo = function AgreeFriendInfo(resolve) {
     resolve(module);
   });
 };
+var MessageBox = function MessageBox(resolve) {
+  import('com/messagebox/messagebox').then(function (module) {
+    resolve(module);
+  });
+};
 _vue2.default.use(_vueRouter2.default);
 
 exports.default = new _vueRouter2.default({
@@ -95,6 +100,10 @@ exports.default = new _vueRouter2.default({
     path: '/addfriend',
     name: 'addfriend',
     component: AddFrinend
+  }, {
+    path: '/messagebox',
+    name: 'messagebox',
+    component: MessageBox
   }, {
     path: '/requestadd',
     name: 'requestadd',
