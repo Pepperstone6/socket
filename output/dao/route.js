@@ -18,6 +18,7 @@ var db = _interopRequireWildcard(_model);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+var io = require('socket.io')(3002);
 function register(req, res) {
   var callback = function callback(data) {
 
@@ -27,8 +28,23 @@ function register(req, res) {
 }
 
 function login(req, res) {
-  var callback = function callback(data) {
+  function getClientIP(req) {
+    return req.headers['x-forwarded-for'] || // 判断是否有反向代理 IP
+    req.connection.remoteAddress || // 判断 connection 的远程 IP
+    req.socket.remoteAddress || // 判断后端的 socket 的 IP
+    req.connection.socket.remoteAddress;
+  };
+  console.log(getClientIP(req));
 
+  var callback = function callback(data) {
+    if (data.success) {
+      io.on('connection', function (socket) {
+        socket.on(data.username, function (data) {
+          console.log(data);
+        });
+      });
+    }
+    data.ip = getClientIP(req);
     res.send(data);
   };
   db.login(req, callback);

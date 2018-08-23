@@ -1,5 +1,5 @@
 import * as db from './model'
-
+let io = require('socket.io')(3002)
 export function register(req, res){
   let callback = (data) => {
 
@@ -9,8 +9,23 @@ export function register(req, res){
 }
 
 export function login(req, res){
-  let callback = (data) => {
+  function getClientIP(req) {
+    return req.headers['x-forwarded-for'] || // 判断是否有反向代理 IP
+        req.connection.remoteAddress || // 判断 connection 的远程 IP
+        req.socket.remoteAddress || // 判断后端的 socket 的 IP
+        req.connection.socket.remoteAddress;
+};
+console.log(getClientIP(req))
 
+  let callback = (data) => {
+    if(data.success){
+      io.on('connection', function(socket){
+        socket.on(data.username, function(data){
+          console.log(data)
+        })
+      })
+    }
+    data.ip = getClientIP(req)
     res.send(data)
   }
   db.login(req, callback)

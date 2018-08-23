@@ -43,7 +43,7 @@ webpackJsonp([1], { "+lzb": function lzb(t, e) {
     }, r.prototype.setJitter = function (t) {
       this.jitter = t;
     };
-  }, "/eQD": function eQD(t, e) {}, 0: function _(t, e) {}, "1Kof": function Kof(t, e) {}, "2gBs": function gBs(t, e) {
+  }, "/eQD": function eQD(t, e) {}, 0: function _(t, e) {}, "2gBs": function gBs(t, e) {
     t.exports = _keys2.default || function (t) {
       var e = [],
           r = Object.prototype.hasOwnProperty;for (var n in t) {
@@ -883,7 +883,7 @@ webpackJsonp([1], { "+lzb": function lzb(t, e) {
                 return R(this, e, r);case "latin1":case "binary":
                 return x(this, e, r);case "base64":
                 return E(this, e, r);case "ucs2":case "ucs-2":case "utf16le":case "utf-16le":
-                return _(this, e, r);default:
+                return S(this, e, r);default:
                 if (n) throw new TypeError("Unknown encoding: " + t);t = (t + "").toLowerCase(), n = !0;}
           }
         }.apply(this, arguments);
@@ -931,11 +931,11 @@ webpackJsonp([1], { "+lzb": function lzb(t, e) {
         var n = t.length;(!e || e < 0) && (e = 0), (!r || r < 0 || r > n) && (r = n);for (var o = "", i = e; i < r; ++i) {
           o += M(t[i]);
         }return o;
-      }function _(t, e, r) {
+      }function S(t, e, r) {
         for (var n = t.slice(e, r), o = "", i = 0; i < n.length; i += 2) {
           o += String.fromCharCode(n[i] + 256 * n[i + 1]);
         }return o;
-      }function S(t, e, r) {
+      }function _(t, e, r) {
         if (t % 1 != 0 || t < 0) throw new RangeError("offset is not uint");if (t + e > r) throw new RangeError("Trying to access beyond buffer length");
       }function T(t, e, r, n, o, i) {
         if (!c.isBuffer(t)) throw new TypeError('"buffer" argument must be a Buffer instance');if (e > o || e < i) throw new RangeError('"value" argument is out of bounds');if (r + n > t.length) throw new RangeError("Index out of range");
@@ -961,49 +961,49 @@ webpackJsonp([1], { "+lzb": function lzb(t, e) {
           }
         }return r;
       }, c.prototype.readUIntLE = function (t, e, r) {
-        t |= 0, e |= 0, r || S(t, e, this.length);for (var n = this[t], o = 1, i = 0; ++i < e && (o *= 256);) {
+        t |= 0, e |= 0, r || _(t, e, this.length);for (var n = this[t], o = 1, i = 0; ++i < e && (o *= 256);) {
           n += this[t + i] * o;
         }return n;
       }, c.prototype.readUIntBE = function (t, e, r) {
-        t |= 0, e |= 0, r || S(t, e, this.length);for (var n = this[t + --e], o = 1; e > 0 && (o *= 256);) {
+        t |= 0, e |= 0, r || _(t, e, this.length);for (var n = this[t + --e], o = 1; e > 0 && (o *= 256);) {
           n += this[t + --e] * o;
         }return n;
       }, c.prototype.readUInt8 = function (t, e) {
-        return e || S(t, 1, this.length), this[t];
+        return e || _(t, 1, this.length), this[t];
       }, c.prototype.readUInt16LE = function (t, e) {
-        return e || S(t, 2, this.length), this[t] | this[t + 1] << 8;
+        return e || _(t, 2, this.length), this[t] | this[t + 1] << 8;
       }, c.prototype.readUInt16BE = function (t, e) {
-        return e || S(t, 2, this.length), this[t] << 8 | this[t + 1];
+        return e || _(t, 2, this.length), this[t] << 8 | this[t + 1];
       }, c.prototype.readUInt32LE = function (t, e) {
-        return e || S(t, 4, this.length), (this[t] | this[t + 1] << 8 | this[t + 2] << 16) + 16777216 * this[t + 3];
+        return e || _(t, 4, this.length), (this[t] | this[t + 1] << 8 | this[t + 2] << 16) + 16777216 * this[t + 3];
       }, c.prototype.readUInt32BE = function (t, e) {
-        return e || S(t, 4, this.length), 16777216 * this[t] + (this[t + 1] << 16 | this[t + 2] << 8 | this[t + 3]);
+        return e || _(t, 4, this.length), 16777216 * this[t] + (this[t + 1] << 16 | this[t + 2] << 8 | this[t + 3]);
       }, c.prototype.readIntLE = function (t, e, r) {
-        t |= 0, e |= 0, r || S(t, e, this.length);for (var n = this[t], o = 1, i = 0; ++i < e && (o *= 256);) {
+        t |= 0, e |= 0, r || _(t, e, this.length);for (var n = this[t], o = 1, i = 0; ++i < e && (o *= 256);) {
           n += this[t + i] * o;
         }return n >= (o *= 128) && (n -= Math.pow(2, 8 * e)), n;
       }, c.prototype.readIntBE = function (t, e, r) {
-        t |= 0, e |= 0, r || S(t, e, this.length);for (var n = e, o = 1, i = this[t + --n]; n > 0 && (o *= 256);) {
+        t |= 0, e |= 0, r || _(t, e, this.length);for (var n = e, o = 1, i = this[t + --n]; n > 0 && (o *= 256);) {
           i += this[t + --n] * o;
         }return i >= (o *= 128) && (i -= Math.pow(2, 8 * e)), i;
       }, c.prototype.readInt8 = function (t, e) {
-        return e || S(t, 1, this.length), 128 & this[t] ? -1 * (255 - this[t] + 1) : this[t];
+        return e || _(t, 1, this.length), 128 & this[t] ? -1 * (255 - this[t] + 1) : this[t];
       }, c.prototype.readInt16LE = function (t, e) {
-        e || S(t, 2, this.length);var r = this[t] | this[t + 1] << 8;return 32768 & r ? 4294901760 | r : r;
+        e || _(t, 2, this.length);var r = this[t] | this[t + 1] << 8;return 32768 & r ? 4294901760 | r : r;
       }, c.prototype.readInt16BE = function (t, e) {
-        e || S(t, 2, this.length);var r = this[t + 1] | this[t] << 8;return 32768 & r ? 4294901760 | r : r;
+        e || _(t, 2, this.length);var r = this[t + 1] | this[t] << 8;return 32768 & r ? 4294901760 | r : r;
       }, c.prototype.readInt32LE = function (t, e) {
-        return e || S(t, 4, this.length), this[t] | this[t + 1] << 8 | this[t + 2] << 16 | this[t + 3] << 24;
+        return e || _(t, 4, this.length), this[t] | this[t + 1] << 8 | this[t + 2] << 16 | this[t + 3] << 24;
       }, c.prototype.readInt32BE = function (t, e) {
-        return e || S(t, 4, this.length), this[t] << 24 | this[t + 1] << 16 | this[t + 2] << 8 | this[t + 3];
+        return e || _(t, 4, this.length), this[t] << 24 | this[t + 1] << 16 | this[t + 2] << 8 | this[t + 3];
       }, c.prototype.readFloatLE = function (t, e) {
-        return e || S(t, 4, this.length), o.read(this, t, !0, 23, 4);
+        return e || _(t, 4, this.length), o.read(this, t, !0, 23, 4);
       }, c.prototype.readFloatBE = function (t, e) {
-        return e || S(t, 4, this.length), o.read(this, t, !1, 23, 4);
+        return e || _(t, 4, this.length), o.read(this, t, !1, 23, 4);
       }, c.prototype.readDoubleLE = function (t, e) {
-        return e || S(t, 8, this.length), o.read(this, t, !0, 52, 8);
+        return e || _(t, 8, this.length), o.read(this, t, !0, 52, 8);
       }, c.prototype.readDoubleBE = function (t, e) {
-        return e || S(t, 8, this.length), o.read(this, t, !1, 52, 8);
+        return e || _(t, 8, this.length), o.read(this, t, !1, 52, 8);
       }, c.prototype.writeUIntLE = function (t, e, r, n) {
         (t = +t, e |= 0, r |= 0, n) || T(this, t, e, r, Math.pow(2, 8 * r) - 1, 0);var o = 1,
             i = 0;for (this[e] = 255 & t; ++i < r && (o *= 256);) {
@@ -1116,16 +1116,16 @@ webpackJsonp([1], { "+lzb": function lzb(t, e) {
         }return o;
       }
     }).call(e, r("DuR2"));
-  }, IoTn: function IoTn(t, e, r) {
+  }, GPIj: function GPIj(t, e, r) {
     "use strict";
     var n = { render: function render() {
         var t = this,
             e = t.$createElement,
-            r = t._self._c || e;return r("div", [r("prev-top", { attrs: { title: t.friendnickname } }), t._v(" "), r("div", { staticClass: "message-wrap" }, [r("div", { staticClass: "ul" }), t._v(" "), r("div", { staticClass: "tool" }, [r("van-cell-group", { staticClass: "message-box" }, [r("van-field", { attrs: { type: "textarea", rows: "1", border: !1, autosize: "" }, model: { value: t.message, callback: function callback(e) {
+            r = t._self._c || e;return r("div", [r("prev-top", { attrs: { title: t.friendnickname } }), t._v(" "), r("div", { staticClass: "message-wrap" }, [r("div", { staticClass: "ul" }), t._v(" "), r("div", { staticClass: "tool" }, [r("van-cell-group", { staticClass: "message-box" }, [r("van-field", { directives: [{ name: "sendMessage", rawName: "v-sendMessage", value: t.message, expression: "message" }], attrs: { type: "textarea", rows: "1", border: !1, autosize: "", icon: "user" }, model: { value: t.message, callback: function callback(e) {
               t.message = e;
             }, expression: "message" } })], 1)], 1)])], 1);
       }, staticRenderFns: [] };e.a = n;
-  }, Jimm: function Jimm(t, e, r) {
+  }, HsyN: function HsyN(t, e) {}, Jimm: function Jimm(t, e, r) {
     "use strict";
     Object.defineProperty(e, "__esModule", { value: !0 });var n = r("RIGA"),
         o = r.n(n);for (var i in n) {
@@ -1134,8 +1134,8 @@ webpackJsonp([1], { "+lzb": function lzb(t, e) {
           return n[t];
         });
       }(i);
-    }var s = r("IoTn");var a = function a(t) {
-      r("1Kof");
+    }var s = r("GPIj");var a = function a(t) {
+      r("HsyN");
     },
         c = r("VU/8")(o.a, s.a, !1, a, null, null);e.default = c.exports;
   }, MY4N: function MY4N(t, e, r) {
@@ -1213,10 +1213,16 @@ webpackJsonp([1], { "+lzb": function lzb(t, e) {
         a = c(r("7ACz"));r("Fd2+");function c(t) {
       return t && t.__esModule ? t : { default: t };
     }i.default.use(o.default), i.default.use(n.default), e.default = { data: function data() {
-        return { friendnickname: "", message: "" };
-      }, mounted: function mounted() {
-        this.$route.params.friendname;this.friendnickname = this.$route.params.friendnickname;(0, s.default)("http://localhost:3001");
-      }, components: { PrevTop: a.default } };
+        return { friendnickname: "", friendname: "", message: "", socket: "" };
+      }, methods: { send: function send() {
+          this.socket.emit(this.friendname, { my: this.message }), console.log(212), this.message = "";
+        } }, mounted: function mounted() {
+        this.friendname = this.$route.params.friendname, this.friendnickname = this.$route.params.friendnickname, this.socket = (0, s.default)("http://localhost:3001");
+      }, components: { PrevTop: a.default }, directives: { sendMessage: { bind: function bind(t, e, r) {
+            t.querySelector("textarea").onkeydown = function (t) {
+              13 == t.keyCode && t.ctrlKey ? r.context[e.expression] = this.value + "\n" : 13 === t.keyCode && (t.preventDefault(), r.context.send && r.context.send());
+            };
+          } } } };
   }, SJFm: function SJFm(t, e) {
     t.exports = function (t, e, r) {
       return t.on(e, r), { destroy: function destroy() {
@@ -1912,4 +1918,4 @@ webpackJsonp([1], { "+lzb": function lzb(t, e) {
       };
     };
   } });
-//# sourceMappingURL=1.75d854531772c6792613.js.map
+//# sourceMappingURL=1.2e27fd6f4dc542e56007.js.map

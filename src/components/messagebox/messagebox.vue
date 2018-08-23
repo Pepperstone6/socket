@@ -8,6 +8,7 @@
       <div class="tool">
           <van-cell-group class="message-box">
             <van-field
+              v-sendMessage="message"
               v-model="message"
               type="textarea"
               rows="1"
@@ -32,16 +33,44 @@ export default {
   data() {
     return {
       friendnickname: "",
-      message: ""
+      friendname: '',
+      message: "",
+      socket: ""
     };
   },
+  methods: {
+    send: function() {
+       const _this = this
+       _this.socket.emit(this.friendname, { my: this.message });
+      console.log(212)
+      this.message = ''
+    }
+  },
   mounted() {
-    let friendname = this.$route.params.friendname;
+    const _this = this
+    this.friendname = this.$route.params.friendname;
     this.friendnickname = this.$route.params.friendnickname;
-    let socket = io("http://localhost:3001");
+    this.socket = io("http://localhost:3001");
   },
   components: {
     PrevTop
+  },
+  directives: {
+    sendMessage: {
+      bind: function(el, bind, vnode) {
+        let textareaNode = el.querySelector("textarea");
+        textareaNode.onkeydown = function(ev) {
+          if (ev.keyCode == 13 && ev.ctrlKey) {
+            vnode.context[bind.expression] = this.value + "\n";
+          } else if (ev.keyCode === 13) {
+            ev.preventDefault();
+            if (vnode.context.send) {
+              vnode.context.send();
+            }
+          }
+        };
+      }
+    }
   }
 };
 </script>

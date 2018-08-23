@@ -66,8 +66,12 @@ export default {
 <style lang="less" scoped>
 #form{
   width: 70%;
-  margin: auto
+  margin: auto;
+  
 }
+.mint-cell {
+    min-width: 200px;
+  }
 .label{
   width: 50px;
 }

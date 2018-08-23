@@ -35,7 +35,7 @@ app.use(express.static(path.resolve(__dirname, '../static/')));
 app.use(express.static(path.resolve(__dirname, '../public/')));
 
 app.use('/', _router2.default);
-http.listen(3001, function () {
+http.listen(3001, '0.0.0.0', function () {
   console.log('server connetion');
 });
 console.log(session);
@@ -43,8 +43,3 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
-
-io.on('connection', function (socket) {
-  socket.on('message', function () {});
-  socket.on('disconnect', function () {});
-});
