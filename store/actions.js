@@ -11,3 +11,6 @@ export function setUserInfo ({commit},userInfo){
   commit(types.SET_USERINFO, userInfo)
   console.log(userInfo)
 }
+export function setSocket({commit},socket){
+  commit(types.SET_SOCKET, socket)
+}

@@ -57,12 +57,15 @@ export default {
     };
   },
   mounted() {
-    // this.$http({
-    //   method: 'GET',
-    //   url: '/getFriend'
-    // }).then(res => {
-    //   console.log(res)
-    // })
+    this.$http({
+      method: 'GET',
+      url: '/api/getFriend',
+      params: {
+        username: this.$store.state.userInfo.username
+      }
+    }).then(res => {
+      console.log(res)
+    })
   },
   methods: {
     getAgreeFriend: function(){

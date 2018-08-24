@@ -1,5 +1,5 @@
 import * as db from './model'
-let io = require('socket.io')(3002)
+import {socketUser} from './im.js'
 export function register(req, res){
   let callback = (data) => {
 
@@ -19,11 +19,14 @@ console.log(getClientIP(req))
 
   let callback = (data) => {
     if(data.success){
-      io.on('connection', function(socket){
-        socket.on(data.username, function(data){
-          console.log(data)
-        })
-      })
+      console.log(data.username)
+      let {username, nickname} = data
+      socketUser[username] = nickname
+      // io.on('connection', function(socket){
+      //   socket.on(data.username, function(data){
+      //     console.log(data)
+      //   })
+      // })
     }
     data.ip = getClientIP(req)
     res.send(data)
@@ -74,4 +77,12 @@ export function agreeRequest(req, res){
     console.log(data)
   }
   db.agreeRequest(req, callback)
+}
+
+export function getFriend(req, res){
+  let callback = (data) =>{
+    res.send(data)
+  }
+  let username = req.query.username
+  db.getFriend(username, callback)
 }

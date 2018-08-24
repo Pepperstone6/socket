@@ -4,6 +4,8 @@ var _router = require('../dao/router');
 
 var _router2 = _interopRequireDefault(_router);
 
+var _socketServer = require('../dao/socketServer.js');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var express = require('express');
@@ -43,3 +45,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+// io.on('connection', function(socket){
+//   console.log(socketUser, typeof socketUser)
+//   if(Object.keys(socketUser).length){
+//     for(let item of Object.keys(socketUser)){
+//       socket.emit(item, {
+//         status: 'online',
+//         msg: `${socketUser[item]}已上线`
+//       })
+//       socket.on(item, function (data){
+//         console.log(item,data,123)
+//         socket.emit(item, {
+//           status: 'online',
+//           msg: `${socketUser[item]}已上线`
+//         })
+//       })
+//     }
+//   }
+// })
+
+(0, _socketServer.socketServer)(io);

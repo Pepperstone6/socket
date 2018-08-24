@@ -10,6 +10,7 @@ var _promise2 = _interopRequireDefault(_promise);
 
 exports.verify = verify;
 exports.setUserInfo = setUserInfo;
+exports.setSocket = setSocket;
 
 var _mutationType = require('./mutation-type.js');
 
@@ -31,4 +32,9 @@ function setUserInfo(_ref, userInfo) {
 
   commit(types.SET_USERINFO, userInfo);
   console.log(userInfo);
+}
+function setSocket(_ref2, socket) {
+  var commit = _ref2.commit;
+
+  commit(types.SET_SOCKET, socket);
 }

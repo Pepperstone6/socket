@@ -11,6 +11,7 @@ exports.requestAdd = requestAdd;
 exports.getRequestFriend = getRequestFriend;
 exports.agreeFriendInfo = agreeFriendInfo;
 exports.agreeRequest = agreeRequest;
+exports.getFriend = getFriend;
 
 var _collections = require('./collections');
 
@@ -389,5 +390,24 @@ function agreeRequest(req, callback) {
       (0, _util.save)(data);
     };
     (0, _util.findOne)(_collections.requestVerifyModel, fields, findResult);
+  });
+}
+
+function getFriend(username, callback) {
+  (0, _util.find)(_collections.requestVerifyModel, { isAgree: 1, $or: [{ friendname: username }, { requestname: username }] }).then(function (res) {
+    var friendArr = [];
+    res.forEach(function (item, index) {
+      var obj = {};
+      if (item.requestname != username) {
+        obj.username = item.requestname;
+        friendArr.push(obj);
+      } else if (item.friendname != username) {
+        obj.username = item.friendname;
+        friendArr.push(obj);
+      }
+    });
+    return (0, _util.find)(_collections.userModel, { $or: friendArr });
+  }).then(function (res) {
+    console.log(res, 123132123);
   });
 }

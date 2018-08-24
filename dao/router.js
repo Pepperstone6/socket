@@ -17,4 +17,6 @@ router.get('/getRequestFriend', route.getRequestFriend)
 router.get('/agreeFriendInfo', route.agreeFriendInfo)
 //
 router.post('/agreeRequest', route.agreeRequest)
+//获取好友
+router.get('/getFriend', route.getFriend)
 export default router

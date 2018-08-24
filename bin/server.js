@@ -9,6 +9,8 @@ let io = require('socket.io')(http)
 const bodyParser = require('body-parser')
 
 import router from '../dao/router'
+
+import {socketServer} from '../dao/socketServer.js'
 mongoose.connect('mongodb://localhost/socket')
 
 let db = mongoose.connection
@@ -37,4 +39,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }))
+// io.on('connection', function(socket){
+//   console.log(socketUser, typeof socketUser)
+//   if(Object.keys(socketUser).length){
+//     for(let item of Object.keys(socketUser)){
+//       socket.emit(item, {
+//         status: 'online',
+//         msg: `${socketUser[item]}已上线`
+//       })
+//       socket.on(item, function (data){
+//         console.log(item,data,123)
+//         socket.emit(item, {
+//           status: 'online',
+//           msg: `${socketUser[item]}已上线`
+//         })
+//       })
+//     }
+//   }
+// })
 
+socketServer(io)

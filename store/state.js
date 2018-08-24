@@ -1,4 +1,5 @@
 const state = {
-  userInfo: {}
+  userInfo: {},
+  socket: null
 }
 export default state

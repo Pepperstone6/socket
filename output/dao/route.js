@@ -11,14 +11,16 @@ exports.requestAdd = requestAdd;
 exports.getRequestFriend = getRequestFriend;
 exports.agreeFriendInfo = agreeFriendInfo;
 exports.agreeRequest = agreeRequest;
+exports.getFriend = getFriend;
 
 var _model = require('./model');
 
 var db = _interopRequireWildcard(_model);
 
+var _im = require('./im.js');
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var io = require('socket.io')(3002);
 function register(req, res) {
   var callback = function callback(data) {
 
@@ -38,11 +40,16 @@ function login(req, res) {
 
   var callback = function callback(data) {
     if (data.success) {
-      io.on('connection', function (socket) {
-        socket.on(data.username, function (data) {
-          console.log(data);
-        });
-      });
+      console.log(data.username);
+      var username = data.username,
+          nickname = data.nickname;
+
+      _im.socketUser[username] = nickname;
+      // io.on('connection', function(socket){
+      //   socket.on(data.username, function(data){
+      //     console.log(data)
+      //   })
+      // })
     }
     data.ip = getClientIP(req);
     res.send(data);
@@ -93,4 +100,12 @@ function agreeRequest(req, res) {
     console.log(data);
   };
   db.agreeRequest(req, callback);
+}
+
+function getFriend(req, res) {
+  var callback = function callback(data) {
+    res.send(data);
+  };
+  var username = req.query.username;
+  db.getFriend(username, callback);
 }

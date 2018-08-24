@@ -389,3 +389,25 @@ export function agreeRequest(req, callback){
     findOne(requestVerifyModel, fields,findResult)
   })
 }
+
+export function getFriend(username, callback){
+  find(requestVerifyModel, {isAgree:1,$or:[{friendname:username},{requestname:username}]}).then(res => {
+    let friendArr = []
+      res.forEach((item, index)=>{
+        let obj ={}
+        if(item.requestname != username){
+          obj.username = item.requestname
+          friendArr.push(obj)
+        }else if(item.friendname != username){
+          obj.username = item.friendname
+          friendArr.push(obj)
+        }
+      })
+      return find(userModel,{$or:friendArr})
+  }).then(res => {
+    console.log(res,123132123)
+  let arr =  res.find((item, index)=> {
+      return item
+    })
+  })
+}

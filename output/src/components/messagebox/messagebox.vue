@@ -35,14 +35,15 @@ export default {
       friendnickname: "",
       friendname: '',
       message: "",
+      username: '',
       socket: ""
     };
   },
   methods: {
     send: function() {
        const _this = this
-       _this.socket.emit(this.friendname, { my: this.message });
-      console.log(212)
+       this.socket.emit(_this.username, _this.friendname,{msg: _this.message})
+      console.log(this.socket)
       this.message = ''
     }
   },
@@ -50,7 +51,10 @@ export default {
     const _this = this
     this.friendname = this.$route.params.friendname;
     this.friendnickname = this.$route.params.friendnickname;
-    this.socket = io("http://localhost:3001");
+    this.username = this.$store.state.userInfo.username
+    // this.socket = io("http://localhost:3001");
+    this.socket = this.$store.state.socket
+    
   },
   components: {
     PrevTop

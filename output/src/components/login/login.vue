@@ -21,6 +21,7 @@
 </template>
 <script>
 import Vue from 'vue'
+import io from 'socket.io-client'
 import {
   Field,
   Button,
@@ -53,6 +54,8 @@ export default {
             position: "middle",
             duration: 1500
           });
+          let socket = io('http://localhost:3001')
+          this.$store.dispatch('setSocket', socket)
           this.$store.dispatch('setUserInfo', data)
           setTimeout(()=>{
             _this.$router.push('/index')
