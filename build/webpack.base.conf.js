@@ -22,9 +22,6 @@ module.exports = {
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
-  externals:{
-    Loca: 'Loca'
-  },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {

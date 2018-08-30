@@ -21,6 +21,7 @@ import {
 } from './util/mailVerify.js'
 let transliteration = require('transliteration')
 let pinyinlite = require('pinyinlite')
+let pinyin = require('pinyin')
 let formidable = require('formidable')
 export function register(req, callback) {
   let form = new formidable.IncomingForm()
@@ -100,12 +101,22 @@ export function register(req, callback) {
         callback(obj)
         return
       }
-      let chat = pinyinlite(nickname)[0]
-      if(chat.length){
-        fields.chat = chat[0].substr(0,1).toUpperCase()
+      let chat = pinyin(nickname,{
+        style: pinyin.STYLE_NORMAL
+      })[0]
+      let letter = chat[0].substr(0,1).toUpperCase()
+      if(/[A-z]/.test(letter)){
+        fields.chat = letter
       }else{
         fields.chat = '#'
       }
+      console.log(fields.chat)
+      // if(chat.length){
+      //   fields.chat = chat[0].substr(0,1).toUpperCase()
+        
+      // }else{
+      //   fields.chat = '#'
+      // }
       let findBc = (res) => {
         if (res.length) {
           let obj = {
@@ -405,9 +416,23 @@ export function getFriend(username, callback){
       })
       return find(userModel,{$or:friendArr})
   }).then(res => {
-    console.log(res,123132123)
-  let arr =  res.find((item, index)=> {
-      return item
+  let arr =  []
+  res.forEach((item, index)=> {
+      item = {
+        sex: item.sex,
+        avatar: item.avatar,
+        _id: item['_id'],
+        chat: item.chat,
+        mobile: item.mobile,
+        nickname: item.nickname,
+        username: item.username
+      }
+      arr.push(item)
     })
+    let obj ={
+      success: true,
+      data: arr
+    }
+    callback(obj)
   })
 }

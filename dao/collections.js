@@ -38,6 +38,12 @@ let  requestVerify = new mongoose.Schema({
   requestnickname: String
 })
 
+let roomSchema = new mongoose.Schema({
+  username:Array,
+  room: String
+})
+
+export const roomModel = mongoose.model('room', roomSchema)
 export const userModel = mongoose.model('user', userSchema)
 export const verifyModel = mongoose.model('verify', verifyCode)
 export const requestVerifyModel = mongoose.model('requestVerify', requestVerify)

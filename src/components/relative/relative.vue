@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="relative">
     <div class="relative-header">
       <h2>通讯录</h2>
       <div @click="addFriend" class="icon-wrap">
@@ -13,7 +13,17 @@
       <div class="friend-icon"><icon width="20" height="20" name="friend"></icon></div><span>新的朋友</span>
     </div>
     <mt-index-list>
-      <mt-index-section index="A">
+      <template v-if="friendObj">
+        <mt-index-section v-for="(item,index) in Object.keys(friendObj)" :key="index" :index="item">
+        <mt-cell class="cell-wrap" v-for="key in friendObj[item]" :key="key['_id']">
+            <div class="friend">
+              <img :src="key.avatar" alt="">
+              <span>{{key.nickname}}</span>
+            </div>
+        </mt-cell>
+        </mt-index-section>
+      </template>
+      <!-- <mt-index-section index="A">
         <mt-cell title="Aaron"></mt-cell>
         <mt-cell title="Alden"></mt-cell>
         <mt-cell title="Austin"></mt-cell>
@@ -32,7 +42,7 @@
       <mt-index-section index="Z">
         <mt-cell title="Zack"></mt-cell>
         <mt-cell title="Zane"></mt-cell>
-      </mt-index-section>
+      </mt-index-section> -->
     </mt-index-list>
     <popup :popupVisible="isShow" :closePopup="closePopup"></popup> 
   </div>
@@ -53,7 +63,8 @@ export default {
   data() {
     return {
       isShow: false,
-      activeNames: ["1"]
+      activeNames: ["1"],
+      friendObj: null
     };
   },
   mounted() {
@@ -64,7 +75,32 @@ export default {
         username: this.$store.state.userInfo.username
       }
     }).then(res => {
-      console.log(res)
+      let data = res.data
+      if(data.success){
+        let arr =  data.data
+        let friendObj = {}
+        arr.forEach((item, index) => {
+          if(typeof friendObj[item.chat] === 'undefined'){
+            friendObj[item.chat] = []
+            friendObj[item.chat].push(item)
+          }else{
+            friendObj[item.chat].push(item)
+          }
+        })
+      let letter = Object.keys(friendObj).sort()
+      let obj2 = {}
+      letter.forEach((item, index) => {
+        if(item === "#"){
+          return
+        }
+        obj2[item] = friendObj[item]
+      })
+      if(typeof friendObj['#'] !== 'undefined'){
+        obj2['#'] = friendObj['#']
+      }
+      console.log(obj2)
+        this.friendObj = obj2
+      }
     })
   },
   methods: {
@@ -91,6 +127,12 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.cell-wrap{
+ .mint-cell-value{
+    width: 100%;
+  }
+}
+
 .relative-header {
   width: 100%;
   height: 50px;
@@ -145,6 +187,23 @@ export default {
   span{
     margin-left: 10px;
     color: #333;
+  }
+}
+
+.friend{
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  img{
+    display: block;
+    width: 40px;
+    height: 40px;
+  }
+  span{
+    color: #333;
+    margin-left: 10px;
   }
 }
 </style>

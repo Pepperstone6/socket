@@ -43,6 +43,12 @@ var requestVerify = new mongoose.Schema({
   requestnickname: String
 });
 
+var roomSchema = new mongoose.Schema({
+  username: Array,
+  room: String
+});
+
+var roomModel = exports.roomModel = mongoose.model('room', roomSchema);
 var userModel = exports.userModel = mongoose.model('user', userSchema);
 var verifyModel = exports.verifyModel = mongoose.model('verify', verifyCode);
 var requestVerifyModel = exports.requestVerifyModel = mongoose.model('requestVerify', requestVerify);

@@ -23,6 +23,7 @@ var _mailVerify = require('./util/mailVerify.js');
 
 var transliteration = require('transliteration');
 var pinyinlite = require('pinyinlite');
+var pinyin = require('pinyin');
 var formidable = require('formidable');
 function register(req, callback) {
   var form = new formidable.IncomingForm();
@@ -101,12 +102,22 @@ function register(req, callback) {
         callback(obj);
         return;
       }
-      var chat = pinyinlite(nickname)[0];
-      if (chat.length) {
-        fields.chat = chat[0].substr(0, 1).toUpperCase();
+      var chat = pinyin(nickname, {
+        style: pinyin.STYLE_NORMAL
+      })[0];
+      var letter = chat[0].substr(0, 1).toUpperCase();
+      if (/[A-z]/.test(letter)) {
+        fields.chat = letter;
       } else {
         fields.chat = '#';
       }
+      console.log(fields.chat);
+      // if(chat.length){
+      //   fields.chat = chat[0].substr(0,1).toUpperCase()
+
+      // }else{
+      //   fields.chat = '#'
+      // }
       var findBc = function findBc(res) {
         if (res.length) {
           var _obj = {
@@ -408,6 +419,23 @@ function getFriend(username, callback) {
     });
     return (0, _util.find)(_collections.userModel, { $or: friendArr });
   }).then(function (res) {
-    console.log(res, 123132123);
+    var arr = [];
+    res.forEach(function (item, index) {
+      item = {
+        sex: item.sex,
+        avatar: item.avatar,
+        _id: item['_id'],
+        chat: item.chat,
+        mobile: item.mobile,
+        nickname: item.nickname,
+        username: item.username
+      };
+      arr.push(item);
+    });
+    var obj = {
+      success: true,
+      data: arr
+    };
+    callback(obj);
   });
 }

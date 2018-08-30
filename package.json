@@ -23,6 +23,7 @@
     "less-loader": "^4.1.0",
     "mint-ui": "^2.2.13",
     "mongoose": "^5.2.7",
+    "pinyin": "^2.8.3",
     "pinyinlite": "^1.2.1",
     "postcss": "^7.0.2",
     "rm": "^0.1.8",
