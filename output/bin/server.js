@@ -16,6 +16,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var io = require('socket.io')(http);
+
 var bodyParser = require('body-parser');
 
 mongoose.connect('mongodb://localhost/socket');

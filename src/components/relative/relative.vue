@@ -15,7 +15,7 @@
     <mt-index-list>
       <template v-if="friendObj">
         <mt-index-section v-for="(item,index) in Object.keys(friendObj)" :key="index" :index="item">
-        <mt-cell class="cell-wrap" v-for="key in friendObj[item]" :key="key['_id']">
+        <mt-cell @click.native="chat(key.username)" class="cell-wrap" v-for="key in friendObj[item]" :key="key['_id']">
             <div class="friend">
               <img :src="key.avatar" alt="">
               <span>{{key.nickname}}</span>
@@ -104,6 +104,10 @@ export default {
     })
   },
   methods: {
+    chat: function(username){
+      console.log(this)
+      this.$router.push(`/friendinfo/${username}`)
+    },
     getAgreeFriend: function(){
       this.$router.push({path: '/agreefriend'})
     },
@@ -126,10 +130,11 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
-.cell-wrap{
+<style lang="less" >
+.mint-cell-wrapper {
+  width: 100%;
  .mint-cell-value{
-    width: 100%;
+    width: 100%!important;
   }
 }
 

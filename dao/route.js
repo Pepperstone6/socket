@@ -86,3 +86,11 @@ export function getFriend(req, res){
   let username = req.query.username
   db.getFriend(username, callback)
 }
+
+export function getFriendInfo(req, res){
+  const callback = (data) => {
+    res.send(data)
+  }
+  const friendname = req.query.friendname
+  db.getFriendInfo(friendname, callback)
+}

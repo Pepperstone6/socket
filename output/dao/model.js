@@ -12,6 +12,7 @@ exports.getRequestFriend = getRequestFriend;
 exports.agreeFriendInfo = agreeFriendInfo;
 exports.agreeRequest = agreeRequest;
 exports.getFriend = getFriend;
+exports.getFriendInfo = getFriendInfo;
 
 var _collections = require('./collections');
 
@@ -438,4 +439,23 @@ function getFriend(username, callback) {
     };
     callback(obj);
   });
+}
+
+function getFriendInfo(friendname, callback) {
+  var friendData = function friendData(data) {
+    console.log(data);
+    var friendInfo = {
+      name: data[0].username,
+      nickname: data[0].nickname,
+      sex: data[0].sex,
+      avatar: data[0].avatar
+    };
+
+    var obj = {
+      success: true,
+      data: friendInfo
+    };
+    callback(obj);
+  };
+  (0, _util.find)(_collections.userModel, { username: friendname }, friendData);
 }

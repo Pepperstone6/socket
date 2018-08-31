@@ -15,7 +15,7 @@
     <mt-index-list>
       <template v-if="friendObj">
         <mt-index-section v-for="(item,index) in Object.keys(friendObj)" :key="index" :index="item">
-        <mt-cell v-for="key in friendObj[item]" :key="key['_id']">
+        <mt-cell @click.native="chat(key.username)" class="cell-wrap" v-for="key in friendObj[item]" :key="key['_id']">
             <div class="friend">
               <img :src="key.avatar" alt="">
               <span>{{key.nickname}}</span>
@@ -90,13 +90,24 @@ export default {
       let letter = Object.keys(friendObj).sort()
       let obj2 = {}
       letter.forEach((item, index) => {
+        if(item === "#"){
+          return
+        }
         obj2[item] = friendObj[item]
       })
+      if(typeof friendObj['#'] !== 'undefined'){
+        obj2['#'] = friendObj['#']
+      }
+      console.log(obj2)
         this.friendObj = obj2
       }
     })
   },
   methods: {
+    chat: function(username){
+      console.log(this)
+      this.$router.push(`/friendinfo/${username}`)
+    },
     getAgreeFriend: function(){
       this.$router.push({path: '/agreefriend'})
     },
@@ -119,10 +130,14 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
- .mint-cell-title .mint-cell-value{
-    width: 100%;
+<style lang="less" >
+.mint-cell-wrapper {
+  width: 100%;
+ .mint-cell-value{
+    width: 100%!important;
   }
+}
+
 .relative-header {
   width: 100%;
   height: 50px;

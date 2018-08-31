@@ -62,6 +62,11 @@ const MessageBox = (resolve) => {
     resolve(module)
   })
 }
+const FriendInfo = (resolve) => {
+  import('com/friendInfo/friendInfo').then(module => {
+    resolve(module)
+  })
+}
 Vue.use(Router)
 
 export default new Router({
@@ -106,6 +111,11 @@ export default new Router({
       path:'/agreefriend',
       name:'agreefriend',
       component:AgreeFriend
+    },
+    {
+      path: '/friendinfo/:friendname',
+      name:'friendinfo',
+      component:FriendInfo
     },
     {
       path:'/agreefriend/:requestname',

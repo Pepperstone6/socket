@@ -5,6 +5,7 @@ const mutations = {
       state.userInfo = userInfo
   },
   [types.SET_SOCKET](state, socket){
+    console.log(socket)
     state.socket = socket
   }
 }

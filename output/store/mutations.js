@@ -22,6 +22,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mutations = (_mutations = {}, (0, _defineProperty3.default)(_mutations, types.SET_USERINFO, function (state, userInfo) {
   state.userInfo = userInfo;
 }), (0, _defineProperty3.default)(_mutations, types.SET_SOCKET, function (state, socket) {
+  console.log(socket);
   state.socket = socket;
 }), _mutations);
 exports.default = mutations;

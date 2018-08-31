@@ -27,6 +27,7 @@ import io from "socket.io-client";
 import PrevTop from "com/prevTop/prevTop";
 import { Field, CellGroup } from "vant";
 
+// import AgreeFriendInfo from 'com/agreeFriendInfo/agreeFriendInfo'
 Vue.use(Field);
 Vue.use(CellGroup);
 export default {
@@ -42,8 +43,8 @@ export default {
   methods: {
     send: function() {
        const _this = this
-       this.socket.emit(_this.username, _this.friendname,{msg: _this.message})
-      console.log(this.socket)
+       this.socket.emit(_this.username, {id: _this.socket.id, friendname:_this.friendname, msg: _this.message})
+      console.log(this.socket,_this.username, _this.friendname)
       this.message = ''
     }
   },
@@ -52,9 +53,12 @@ export default {
     this.friendname = this.$route.params.friendname;
     this.friendnickname = this.$route.params.friendnickname;
     this.username = this.$store.state.userInfo.username
-    // this.socket = io("http://localhost:3001");
+    console.log(this.socket)
     this.socket = this.$store.state.socket
-    
+      this.socket.on(this.username, function(friendname,data){
+        console.log(data)
+      // console.log(friendname,data, 123132)
+    })
   },
   components: {
     PrevTop

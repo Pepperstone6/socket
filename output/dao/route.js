@@ -12,6 +12,7 @@ exports.getRequestFriend = getRequestFriend;
 exports.agreeFriendInfo = agreeFriendInfo;
 exports.agreeRequest = agreeRequest;
 exports.getFriend = getFriend;
+exports.getFriendInfo = getFriendInfo;
 
 var _model = require('./model');
 
@@ -108,4 +109,12 @@ function getFriend(req, res) {
   };
   var username = req.query.username;
   db.getFriend(username, callback);
+}
+
+function getFriendInfo(req, res) {
+  var callback = function callback(data) {
+    res.send(data);
+  };
+  var friendname = req.query.friendname;
+  db.getFriendInfo(friendname, callback);
 }

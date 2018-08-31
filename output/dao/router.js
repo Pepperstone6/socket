@@ -29,4 +29,6 @@ router.get('/agreeFriendInfo', route.agreeFriendInfo);
 router.post('/agreeRequest', route.agreeRequest);
 //获取好友
 router.get('/getFriend', route.getFriend);
+//获取好友信息
+router.get('/getFriendInfo', route.getFriendInfo);
 exports.default = router;

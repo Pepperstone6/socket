@@ -55,6 +55,7 @@ export default {
             duration: 1500
           });
           let socket = io('http://localhost:3001')
+          console.log(socket)
           this.$store.dispatch('setSocket', socket)
           this.$store.dispatch('setUserInfo', data)
           setTimeout(()=>{

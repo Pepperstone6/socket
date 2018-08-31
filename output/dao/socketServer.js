@@ -17,16 +17,28 @@ var _im = require('../dao/im.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var obj = {};
 var socketServer = exports.socketServer = function socketServer(io) {
+  var vm = io.sockets.sockets;
   io.on('connection', function (socket) {
     if ((0, _keys2.default)(_im.socketUser).length) {
+      console.log(socket);
+
       var _loop = function _loop(item) {
+        if (typeof obj[item] === 'undefined') {
+          obj[item] = socket.id;
+        }
+        console.log(obj);
         socket.emit(item, {
           status: 'online',
           msg: _im.socketUser[item] + '\u5DF2\u4E0A\u7EBF'
         });
-        socket.on(item, function (friend, msg) {
-          socket.emit(friend, item, msg);
+        socket.on(item, function (config) {
+          var friendname = config.friendname;
+          var socketId = obj[friendname];
+          console.log(obj, socketId, 132);
+          //  console.log(vm[socketId],'obj')
+          vm[socketId].emit(friendname, item, { msg: config.msg });
         });
       };
 

@@ -436,3 +436,22 @@ export function getFriend(username, callback){
     callback(obj)
   })
 }
+
+export function getFriendInfo(friendname, callback){
+  const friendData = (data) =>{
+    console.log(data)
+      let friendInfo = {
+        name: data[0].username,
+        nickname: data[0].nickname,
+        sex: data[0].sex,
+        avatar: data[0].avatar
+      }
+
+      let obj = {
+        success:true,
+        data: friendInfo
+      }
+      callback(obj)
+  }
+  find(userModel,{username:friendname},friendData)
+}
